@@ -1,0 +1,1471 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>Espace Admin</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="" name="keywords">
+    <meta content="" name="description">
+
+    <!-- Favicon -->
+    <link href="img/favicon.ico" rel="icon">
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Icon Font Stylesheet -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+    <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+    <link href="lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css" rel="stylesheet" />
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="/css/Docteur/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Template Stylesheet -->
+    <link href="/css/Docteur/css/style.css" rel="stylesheet">
+   <script src="https://kit.fontawesome.com/0b6d129e94.js" crossorigin="anonymous"></script>
+
+   <!-- Data table  -->
+   <link rel="stylesheet" href=" https://cdn.datatables.net/2.0.7/css/dataTables.dataTables.min.css">
+   <link rel="stylesheet" href="https://cdn.datatables.net/2.0.7/css/dataTables.bootstrap5.min.css">
+   <link rel="stylesheet" href="https://cdn.datatables.net/autofill/2.7.0/css/autoFill.bootstrap5.min.css">
+ 
+   <style>
+    body{
+        overflow-x:none;
+    }
+    .patients_table{
+        overflow-x: auto;
+    }
+    thead{
+        background-color: #2c4964;
+    }
+
+    .page-header h3{
+		padding:10px;
+		}
+		.panel-primary{
+		border:1px solid #3071a9 !important;
+		}
+		.panel-body{
+			padding:20px;
+		}
+		.panel.with-nav-tabs .panel-heading{
+		    padding: 5px 5px 0 5px;
+		    background-color: #3071a9;
+		}
+		.panel.with-nav-tabs.panel-body{
+		    padding: 10px 15px;
+		}
+		.panel.with-nav-tabs .nav-tabs{
+			border-bottom: none;
+		}
+		.panel.with-nav-tabs .nav-justified{
+			margin-bottom: -1px;
+		}
+    	/*** PANEL PRIMARY ***/
+		.with-nav-tabs.panel-primary .nav-tabs > a,
+		.with-nav-tabs.panel-primary .nav-tabs > a:hover,
+		.with-nav-tabs.panel-primary .nav-tabs > a:focus {
+		    color: #fff;
+            background-color: #3071a9;
+		}
+		.with-nav-tabs.panel-primary .nav-tabs > .open > a,
+		.with-nav-tabs.panel-primary .nav-tabs > .open > a:hover,
+		.with-nav-tabs.panel-primary .nav-tabs > .open > a:focus,
+		.with-nav-tabs.panel-primary .nav-tabs > a:hover,
+		.with-nav-tabs.panel-primary .nav-tabs >  a:focus {
+			color: hsl(0, 0%, 100%);
+			background-color: #3071a9;
+			border-color: transparent;
+		}
+		.with-nav-tabs.panel-primary .nav-tabs > a.active,
+		.with-nav-tabs.panel-primary .nav-tabs > a.active > a:hover,
+		.with-nav-tabs.panel-primary .nav-tabs > a.active > a:focus {
+			color: #428bca;
+			background-color: #fff;
+			border-color: #428bca;
+			border-bottom-color: transparent;
+		}
+		.with-nav-tabs.panel-primary .nav-tabs > li.dropdown .dropdown-menu {
+		    background-color: #428bca;
+		    border-color: #3071a9;
+		}
+		.with-nav-tabs.panel-primary .nav-tabs > li.dropdown .dropdown-menu > li > a {
+		    color: #fff;   
+		}
+		.with-nav-tabs.panel-primary .nav-tabs > li.dropdown .dropdown-menu > li > a:hover,
+		.with-nav-tabs.panel-primary .nav-tabs > li.dropdown .dropdown-menu > li > a:focus {
+		    background-color: #3071a9;
+		}
+		.with-nav-tabs.panel-primary .nav-tabs > li.dropdown .dropdown-menu > .active > a,
+		.with-nav-tabs.panel-primary .nav-tabs > li.dropdown .dropdown-menu > .active > a:hover,
+		.with-nav-tabs.panel-primary .nav-tabs > li.dropdown .dropdown-menu > .active > a:focus {
+		    background-color: #4a9fe9;
+		}
+		/********************************************************************/
+			input.error {
+		    border-color: #f00 !important;
+			}
+			small.required {
+			    color:#f00;
+			}
+			.table_permission_container{
+			height:500px;
+			width:100%;
+            overflow: auto;
+		    }
+ 		    #data_table_permissions td:nth-child(even) {
+              background-color: #ddd;
+           }
+		    
+		   input[type=checkbox] {
+           accent-color: Blue;
+           }
+    
+    /* Make table header fixed */
+    #data_table_permissions thead {
+      position: sticky;
+      top: 0;
+      background:#2c4964;
+      color:white;
+      border-radius:3px;
+    }   
+    thead th {
+        color:white;
+    }
+    .modal-header{
+      background: #2c4964;
+    }
+        .modal-confirm {		
+		color: #636363;
+		width: 325px;
+	}
+	.modal-confirm .modal-content {
+		padding: 20px;
+		border-radius: 5px;
+		border: none;
+	}
+	.modal-confirm .modal-header {
+		border-bottom: none;   
+        position: relative;
+	}
+	.modal-confirm h4 {
+		width:100%;
+		text-align: center;
+		font-size: 26px;
+		margin: 30px 0 -15px;
+	}
+	.modal-confirm .form-control, .modal-confirm .btn {
+		min-height: 40px;
+		border-radius: 3px; 
+	}
+	.modal-confirm .close {
+        position: absolute;
+		top: -5px;
+		right: -5px;
+	}	
+	.modal-confirm .modal-footer {
+		border: none;
+		text-align: center;
+		border-radius: 5px;
+		font-size: 13px;
+	}	
+	.modal-confirm .icon-box {
+		color: #fff;		
+		position: absolute;
+		margin: 0 auto;
+		left: 0;
+		right: 0;
+		top: -70px;
+		width: 95px;
+		height: 95px;
+		border-radius: 50%;
+		z-index: 9;
+		/* background: #82ce34; */
+		padding: 15px;
+		text-align: center;
+		box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.1);
+	}
+	.modal-confirm .icon-box i {
+		font-size: 58px;
+		position: relative;
+		top: 3px;
+	}
+	.modal-confirm.modal-dialog {
+		margin-top: 80px;
+	}
+    .modal-confirm .btn {
+        color: #fff;
+        border-radius: 4px;
+		text-decoration: none;
+		transition: all 0.4s;
+        line-height: normal;
+        border: none;
+        width:100%;
+    }
+    form .form-group{
+    margin:7px;
+    }
+   </style>
+
+</head>
+
+<body>
+    <div class="container-xxl position-relative bg-white d-flex p-0">
+        <!-- Spinner Start -->
+        <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+            <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
+        <!-- Spinner End -->
+
+
+        <!-- Sidebar Start -->
+      <div th:replace="E.Admin/adminSidebar.html"></div>
+
+        <!-- Sidebar End -->
+
+
+        <!-- Content Start -->
+        <div class="content">
+            <!-- Navbar Start -->
+            <nav class="navbar navbar-expand bg-light navbar-light sticky-top px-4 py-0">
+                <a href="#" class="sidebar-toggler flex-shrink-0">
+                    <i class="fa fa-bars"></i>
+                </a>
+                    <div class="nav-item dropdown text-end">
+                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+                            <img class="rounded-circle me-lg-2" src="img/user.jpg" alt="" style="width: 40px; height: 40px;">
+                            <span class="d-none d-lg-inline-flex">John Doe</span>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-end bg-light border-0 rounded-0 rounded-bottom m-0">
+                            <a href="#" class="dropdown-item">My Profile</a>
+                            <a href="#" class="dropdown-item">Settings</a>
+                            <a href="#" class="dropdown-item">Log Out</a>
+                        </div>
+                    </div>
+            </nav>
+      <!-- Navbar End -->
+
+            <!-- Page Content Name -->
+            <div class="container pt-4 mt-3 px-4">
+                <div class="alert bg-light text-secondary " role="alert">
+                    <i class="fa-solid fa-hospital-user me-2" ></i>
+                    Gestion Des Ressources
+               
+             </div>     
+            </div>
+            <!-- End Page Content Name -->
+   
+            <div class="container"> 
+                <!-- Col 0 -->
+                  
+                <!--/ Col 0 -->
+                <div class="row">
+                <div class="col-md-9"> <!-- Col 1 -->
+                <div class="panel with-nav-tabs panel-primary">
+                     <div class="panel-heading">
+                        <nav class="nav nav-tabs flex-column flex-sm-row" id="Tab-Content" role="tablist">
+                            <a id="tab_Role" href="#content-tab-Roles" class="nav-item nav-link active" data-bs-toggle="tab" role="tab" aria-controls="content-tab-Roles" aria-selected="true">
+                                <i class="fa fa-user mr-2"></i> Role
+                            </a>
+                            <a id="tab_Ressource" href="#content-tab-Ressource" class="nav-item nav-link" data-bs-toggle="tab" role="tab" aria-controls="content-tab-Ressource" aria-selected="false">
+                                <i class="fa fa-sitemap mr-2"></i> Ressources
+                            </a>
+                            <a id="tab_Permissions" href="#content-tab-Permissions" class="nav-item nav-link" data-bs-toggle="tab" role="tab" aria-controls="content-tab-Permissions" aria-selected="false">
+                                <i class="fa fa-key mr-2"></i> Permission
+                            </a>
+                        </nav>
+                    </div>
+                    <div class="panel-body">
+                        <!-- Tab content -->
+                        <div class="tab-content" id="Tab-Content">
+                                <!-- Content tab 1	: Roles-->
+                                <div id="content-tab-Roles" class="tab-pane active" role="tabpanel" aria-labelledby="tab-bootstrap">
+                                       <div class="alert bg-light text-secondary" role="alert">
+                                           <i class="fa fa-list-ol mr-2"></i>
+                                           ROLE
+                                        <a href="#" data-bs-toggle="modal" data-bs-target="#Role_Add_Modal" class="btn btn-outline-info float-right" title="Ajouter un Role"><i class="fa fa-plus"></i></a>
+                                    </div>
+                                    <table id="data_table_Role" class="table table-striped table-bordered" cellspacing="0" width="100%">
+                                        <thead>
+                                            <tr>
+                                                <th>N°</th>
+                                                <th>Code</th>
+                                                <th>Nom</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
+                                    <!-- Début : Modal Add New Role -->
+                                        <div id="Role_Add_Modal" class="modal" tabindex="-1" role="dialog">
+                                            <div class="modal-dialog">
+                                            <form id="Role_Add_Form" method="POST" th:action="@{/Role/Add}" th:object="${RoleDto}" >
+                                                  <div class="modal-content shadow-lg p-3 mb-5 bg-white rounded">
+                                                      <div class="modal-header">
+                                                        <h4 class="modal-title text-white">
+                                                            Ajouter un Role
+                                                        </h4>
+                                                        <button type="button" class="btn-close text-light" id="close" data-bs-dismiss="modal" aria-label="Close">
+
+                                                        </button>
+                                                    </div>
+                                                      <div class="modal-body">
+                                                          <div class="form-group row">
+                                                            <label for="role_code" class="col-sm-3 control-label">Code du Role</label>
+                                                            <div class="col-sm-9">
+                                                              <input id="role_code" type="text" class="form-control" name="code" placeholder="Exemple: DOCTEUR" required/>
+                                                            </div>
+                                                          </div>
+                                                        <div class="form-group row">
+                                                          <label for="nom" class="col-sm-3 control-label">Nom du Role</label>
+                                                          <div class="col-sm-9">
+                                                            <input id="nom" type="text" class="form-control" name="nom" placeholder="Nom du Role en français" required/>
+                                                          </div>
+                                                        </div>
+                                                         
+                                                        <div class="form-group row">
+                                                            <label for="Role_code" class="col-sm-3 control-label">Description</label>
+                                                            <div class="col-sm-9">
+                                                              <input id="Role_code" type="text" class="form-control" name="description" placeholder="Decrire le Role" required/>
+                                                            </div>
+                                                          </div>
+                                                  </div>
+                                                <div class="modal-footer ">
+                                                    <input type="submit" class="btn btn-primary" value="Enregistrer" />
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Annuler</button>
+                                                  </div>
+                                                </div>
+                                               </form>
+                                            </div>
+                                        </div>
+                                     <!-- Fin : Modal Add New Role -->
+                                     <!-- Début : Modal Update Role -->
+                                        <div id="Role_Update_Modal" class="modal" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true" data-backdrop="false">
+                                            <div class="modal-dialog">
+                                            <form id="Role_Update_Form" method="POST" th:action="@{/Role/Update}" th:object="${RoleDto}" >
+                                                  <div class="modal-content shadow-lg p-3 mb-5 bg-white rounded">
+                                                      <div class="modal-header">
+                                                        <h4 class="modal-title text-white">
+                                                            Modifier le Role
+                                                        </h4>
+                                                         <button type="button" class="btn-close text-light" id="close" data-bs-dismiss="modal" aria-label="Close">
+
+                                                        </button>
+                                                    </div>
+                                                    
+                                                      <div class="modal-body">
+                                                          <div class="form-group row">
+                                                            <label for="Role_code" class="col-sm-3 control-label">Code du Role</label>
+                                                            <div class="col-sm-9">
+                                                            <input id="Role_id" type="hidden"  class="form-control" name="id"  required/>
+                                                              <input id="Role_code" type="text" class="form-control" name="code" placeholder="Exemple: PATIENT" required/>
+                                                            </div>
+                                                          </div>
+                                                        <div class="form-group row">
+                                                          <label for="Role_Nom_Fr" class="col-sm-3 control-label">Nom du Role</label>
+                                                          <div class="col-sm-9">
+                                                            <input id="nom" type="text" class="form-control" name="nom" placeholder="Nom du Role " required/>
+                                                          </div>
+                                                        </div>
+                                                          
+                                                        <div class="form-group row">
+                                                            <label for="Role_code" class="col-sm-3 control-label">Description</label>
+                                                            <div class="col-sm-9">
+                                                              <input id="Role_code" type="text" class="form-control" name="description" placeholder="Decrire le Role" required/>
+                                                            </div>
+                                                          </div>
+                                                  </div>
+                                                <div class="modal-footer ">
+                                                    <input type="submit" class="btn btn-primary" value="Enregistrer" />
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Annuler</button>
+                                                  </div>
+                                                </div>
+                                               </form>
+                                            </div>
+                                        </div>
+                                     <!-- Fin : Modal Update Role -->
+                                     <!-- Début : Modal Details Role -->
+                                        <div id="Role_Details_Modal" class="modal" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true" data-backdrop="false">
+                                            <div class="modal-dialog">
+                                                  <div class="modal-content shadow-lg p-3 mb-5 bg-white rounded">
+                                                      <div class="modal-header ">
+                                                        <h4 class="modal-title text-white">
+                                                            Détails du Role
+                                                        </h4>
+                                                       <button type="button" class="btn-close text-light" id="close" data-bs-dismiss="modal" aria-label="Close">
+
+                                                        </button>
+                                                    </div>
+                                                      <div class="modal-body">
+                                                          <ul class="list-group">
+                                                            <!-- Affichage dynamique des détails du Role-->
+                                                        </ul>
+                                                    </div>
+                                                    <div class="modal-footer ">
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Fermer</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                     <!-- Fin : Modal Details Role -->
+                                </div>
+                                <!-- /Content tab 1	: Roles-->
+                                <!-- Content tab 2	: Filières-->
+                                <div id="content-tab-Ressource" class="tab-pane" role="tabpanel" aria-labelledby="tab-bootstrap">
+                                    <div class="alert bg-light text-secondary" role="alert">
+                                           <i class="fa fa-sitemap mr-2"></i>
+                                           Ressources
+                                        <a href="#" data-bs-toggle="modal" data-bs-target="#Ressource_Add_Modal" class="btn btn-outline-info float-right" title="Ajouter un filière"><i class="fa fa-plus"></i></a>
+                                        
+                                    </div>
+                                    <table id="data_table_Ressource" class="table table-striped table-bordered" cellspacing="0" width="100%">
+                                        <thead>
+                                            <tr>
+                                                <th>N°</th>
+                                                <th>Code</th>
+                                                <th>Url</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
+                                    <!-- Début : Modal Add New Ressource -->
+                                        <div id="Ressource_Add_Modal" class="modal" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                            <form id="Ressource_Add_Form" method="POST" th:action="@{/Ressource/Add}" th:object="${RessourceDto}" >
+                                                  <div class="modal-content shadow-lg p-3 mb-5 bg-white rounded">
+                                                      <div class="modal-header">
+                                                        <h4 class="modal-title text-white">
+                                                            Ajouter une Ressource
+                                                        </h4>
+                                                         <button type="button" class="btn-close text-light" id="close" data-bs-dismiss="modal" aria-label="Close">
+
+                                                        </button>
+                                                    </div>
+                                                      <div class="modal-body">
+                                                          <div class="form-group row">
+                                                            <label for="Ressource_code" class="col-sm-3 control-label">Code</label>
+                                                            <div class="col-sm-9">
+                                                              <input id="Ressource_code" type="text" class="form-control" name="code" placeholder="Code du Ressource" required/>
+                                                            </div>
+                                                          </div>
+                                                              <div class="form-group row">
+                                                            <label for="Ressource_Nom" class="col-sm-3 control-label">Nom</label>
+                                                            <div class="col-sm-9">
+                                                              <input id="Ressource_Nom" type="text" class="form-control" name="nom" placeholder="Nom du Ressource" required/>
+                                                            </div>
+                                                          </div>
+                                                        <div class="form-group row">
+                                                          <label for="Ressource_url" class="col-sm-3 control-label">Url</label>
+                                                          <div class="col-sm-9">
+                                                            <input id="Ressource_url" type="text" class="form-control" name="url" placeholder="Exemple:  ${pageContext.request.contextPath}/E.Admin/index" required/>
+                                                          </div>
+                                                        </div>
+                                                          <div class="form-group row">
+                                                          <label for="Ressource_desc" class="col-sm-3 control-label">Descritption</label>
+                                                          <div class="col-sm-9">
+                                                            <input id="Ressource_desc" type="text" class="form-control" name="description" dir="rtl" placeholder="Decrire la Ressource"/>
+                                                          </div>
+                                                        </div>
+                                                  </div>
+                                                <div class="modal-footer ">
+                                                    <input type="submit" class="btn btn-primary" value="Enregistrer" />
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Annuler</button>
+                                                  </div>
+                                                </div>
+                                               </form>
+                                            </div>
+                                        </div>
+                                     <!-- Fin : Modal Add New Ressource -->
+                                     <!-- Début : Modal Update Ressource -->
+                                        <div id="Ressource_Update_Modal" class="modal" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true" data-backdrop="false">
+                                            <div class="modal-dialog">
+                                            <form id="Ressource_Update_Form" method="POST"th:action="@{/Ressource/Update}" th:object="${RessourceDto}" >
+                                                  <div class="modal-content shadow-lg p-3 mb-5 bg-white rounded">
+                                                      <div class="modal-header">
+                                                        <h4 class="modal-title text-white">
+                                                            Modifier la Ressource
+                                                        </h4>
+                                                        <button type="button" class="btn-close text-light" id="close" data-bs-dismiss="modal" aria-label="Close">
+
+                                                        </button>
+                                                    </div>
+                                                             <div class="modal-body">
+                                                          <div class="form-group row">
+                                                            <label for="Ressource_code" class="col-sm-3 control-label">Code</label>
+                                                            <div class="col-sm-9">
+                                                            <input id="Role_id" type="hidden"  class="form-control" name="id" placeholder="Id" required/>
+                                                              <input id="Ressource_code" type="text" class="form-control" name="code" placeholder="Code du Ressource" required/>
+                                                            </div>
+                                                          </div>
+                                                              <div class="form-group row">
+                                                            <label for="Ressource_Nom" class="col-sm-3 control-label">Nom</label>
+                                                            <div class="col-sm-9">
+                                                              <input id="Ressource_Nom" type="text" class="form-control" name="nom" placeholder="Nom du Ressource" required/>
+                                                            </div>
+                                                          </div>
+                                                        <div class="form-group row">
+                                                          <label for="Ressource_url" class="col-sm-3 control-label">Url</label>
+                                                          <div class="col-sm-9">
+                                                            <input id="Ressource_url" type="text" class="form-control" name="url" placeholder="Exemple:  ${pageContext.request.contextPath}/E.Admin/index" required/>
+                                                          </div>
+                                                        </div>
+                                                          <div class="form-group row">
+                                                          <label for="Ressource_desc" class="col-sm-3 control-label">Descritption</label>
+                                                          <div class="col-sm-9">
+                                                            <input id="Ressource_desc" type="text" class="form-control" name="descption"  placeholder="Decrire la Ressource"/>
+                                                          </div>
+                                                        </div>
+                                                  </div>
+                                                <div class="modal-footer ">
+                                                    <input type="submit" class="btn btn-primary" value="Enregistrer" />
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Annuler</button>
+                                                  </div>
+                                                </div>
+                                               </form>
+                                        </div>
+                                    </div>
+                                    <!-- Début : Modal Details Ressource -->
+                                        <div id="Ressource_Details_Modal" class="modal" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true" data-backdrop="false">
+                                            <div class="modal-dialog">
+                                                  <div class="modal-content shadow-lg p-3 mb-5 bg-white rounded">
+                                                      <div class="modal-header">
+                                                        <h4 class="modal-title text-white">
+                                                            Détails de Ressources
+                                                        </h4>
+                                                        <button type="button" class="btn-close text-light" id="close" data-bs-dismiss="modal" aria-label="Close">
+
+                                                        </button>
+                                                    </div>
+                                                      <div class="modal-body">
+                                                          <ul class="list-group">
+                                                            <!-- Affichage dynamique des détails de la Ressource-->
+                                                        </ul>
+                                                    </div>
+                                                    <div class="modal-footer ">
+                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Fermer</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                     <!-- Fin : Modal Details Ressource -->
+                                </div>
+                                <!-- /Content tab 2	: Filières-->
+                                <!-- Content tab 3	: Permissions-->
+                                <div id="content-tab-Permissions" class="tab-pane" role="tabpanel" aria-labelledby="content-tab-Permissions">
+                                       <div class="alert bg-light text-secondary" role="alert">
+                                           <i class="fa fa-cubes mr-2"></i>
+                                           Permission
+                                        
+                                    </div>
+                                    <div class="alert alert-warning">
+                                      <button type="button" data-bs-dismiss="alert" aria-hidden="true" class="close">×</button>
+                                      <div class="row">  
+                                        <div class="col-md-2">
+                                          <i class="fa fa-exclamation-triangle text-danger" style="font-size:6vw;"></i>
+                                        </div>
+                                        <div class="col-md-10">
+                                          <strong>Important !</strong>
+                                          <p>
+                                         
+                                            Merci de respecter les conditions ci-dessous : <br>
+                                          - Cocher Une Case Au minimum .<br>
+                                          - Après avoir décoché la case, le rôle n'aura plus le droit d'accéder à l'url correspondante.	
+                                       
+                                      
+                                          </p>
+                                        </div>
+                                       </div>
+                                        
+                                      </div>							
+                                    <form  id="Permission_Add_Form" th:action="@{/Permission/Add}" th:object="${Permission}" method="POST">
+        
+                                    <div class="table_permission_container">
+                                    
+                                    <table  id="data_table_permissions" class="table table-striped table-bordered" cellspacing="0" style="width:100%">
+                                        
+                                        
+                                        <thead >
+                                            <tr id="th">
+                                                
+                                            </tr>
+                                        </thead>
+                                        
+                                        
+                                        <tbody id="td">
+                                        
+                                        
+                                        </tbody>
+                                        
+                                        
+                                    </table>
+        
+                                    </div>
+                                 <div class="modal-footer ">
+                                      <input type="submit" class="btn btn-primary" id="permission_add_button"  value="Enregistrer" />
+                                      <button type="reset" class="btn btn-secondary" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Annuler</button>
+                                  
+                                 </div>	
+                                 </form>	
+                                
+                                </div>
+                            
+                        </div>
+                        <!-- /Tab content -->
+                     </div> <!-- FInish -->
+                  </div>
+                </div> <!-- /Col 1 -->
+                <div class="col-md-3"> <!-- Col 2 -->
+                    <div class="panel with-nav-tabs panel-primary">
+                     <div class="panel-heading">
+                            <nav class="nav nav-tabs flex-column flex-sm-row"  id="Tab-Content-2" role="tablist">
+                                <a id="tab_Annonces" href="#content-tab-Annonces" class="nav-item nav-link active" data-toggle="tab" role="tab" aria-controls="content-tab-Annonces" aria-selected="false">
+                                    <span class="fa fa-bullhorn mr-1"></span> Annonces
+                                </a>
+                                <a  id="tab_Actualites" href="#content-tab-Actualites" class="nav-item nav-link" data-toggle="tab" role="tab" aria-controls="content-tab-Actualites" aria-selected="false">
+                                    <span class="fa fa-newspaper mr-1"></span> Actualites
+                                </a>
+                            </nav>
+                    </div>
+                
+                </div>
+                </div> <!-- Col 2 -->
+            </div><!-- /row 1 -->
+            
+            <!-- /Page Content  -->
+        </div>
+
+
+              <!-- Footer Start -->
+              <div th:replace="layouts/footer.html"></div>
+              <!-- Footer End -->
+        </div>
+        <!-- Content End -->
+
+
+        <!-- Back to Top -->
+        <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
+    </div>
+<!-- Modal Success -->
+<div id="modalSuccess" class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-confirm">
+      <div class="modal-content">
+          <div class="modal-header">
+              <div class="icon-box bg-success">
+                  <i class="material-icons fa fa-check"></i>
+              </div>				
+              <h4 class="modal-title text-center text-light">Succès !</h4>	
+          </div>
+          <div class="modal-body">
+              <p class="text-center">
+                  <!-- On affiche ici le message obtenu du coté serveur -->
+              </p>
+          </div>
+          <div class="modal-footer">
+              <button class="btn btn-success btn-block" data-bs-dismiss="modal">Fermer</button>
+          </div>
+      </div>
+    </div>
+  </div>
+<!-- Fin : Moad Success -->
+<!-- Début : Modal error -->
+  <div id="modalError" class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-confirm">
+      <div class="modal-content">
+          <div class="modal-header">
+              <div class="icon-box bg-danger">
+                  <i class="material-icons fa fa-exclamation-triangle"></i>
+              </div>				
+              <h4 class="modal-title text-center text-light">Echec !</h4>	
+          </div>
+          <div class="modal-body">
+              <p class="text-center">
+                  <!-- On affiche ici le message obtenu du coté serveur -->
+              </p>
+          </div>
+          <div class="modal-footer">
+              <button class="btn btn-secondary btn-block" data-bs-dismiss="modal">Fermer</button>
+          </div>
+      </div>
+    </div>
+  </div>
+<!-- Fin : Moad Error -->
+<!-- Début : Moad Confirmation -->
+<div id="modalConfirm" class="modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-dialog-centered modal-confirm " role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+              <div class="icon-box bg-warning">
+                  <i class="material-icons fa fa-exclamation-triangle"></i>
+              </div>				
+              <h4 class="modal-title text-center">Supprimer ?</h4>	
+        </div>
+        <div class="modal-body">
+              <p class="text-center">
+                  Etes vous sûre de vouloir supprimer cet enregistrement ?
+              </p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" data-bs-dismiss="modal" class="btn btn-warning  mr-auto" id="delete">Supprimer</button>
+          <button type="button" data-bs-dismiss="modal" class="btn btn-secondary  ">Annuler</button>
+        </div>
+       </div>
+    </div>
+</div>
+<!-- Fin : Moad Confirmation-->
+<!-- Début : Moad Loading Ajax -->
+<!-- <div id="loading-image" class="modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-dialog-centered modal-sm" >
+      <div class="modal-content" style="width: 48px; color:orange;">
+          <span class="fa fa-spinner fa-spin fa-3x"></span>
+      </div>
+  </div>
+</div> -->
+    <!-- JavaScript Libraries -->
+    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- DataTables JS -->
+    <script src="https://cdn.datatables.net/2.0.7/js/dataTables.bootstrap5.min.js"></script>
+    <script src="https://cdn.datatables.net/2.0.7/js/dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/autofill/2.7.0/js/dataTables.autoFill.min.js"></script>
+    <script src="https://cdn.datatables.net/autofill/2.7.0/js/autoFill.bootstrap5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/3.0.2/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.bootstrap5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.colVis.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.print.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.html5.min.js"></script>
+    <!-- Template Javascript -->
+    <script src="/js/main.js"></script>
+
+	<script type="text/javascript">
+  	
+        $(document).ready(function() {
+            /**************** Début : Ajax Load Animation *************************/
+         /*    $(document).ajaxStart(function(){
+                $('#loading-image').show();
+           });
+            $(document).ajaxStop(function(){
+                $('#loading-image').hide();
+           }); */
+          /*******************Fin : Ajax Load Animation *************************/
+          
+                  
+            /************** DataTable du Tab : Roles **************/
+                // Initialisation du DataTable Roles
+                //$('#data_table_Roles').append('<caption style="caption-side: bottom">Liste des Roles.</caption>');
+                $('#data_table_Role').DataTable(
+                    {	
+                        "language": {
+                            "paginate": {
+                              "previous": "Précèdent",
+                              "next": "Suivant"
+                            }
+                          },
+                        "paging": true,
+                        "autoWidth": true,
+                        "columnDefs": [
+                            { "orderable": false, "targets": 3 }
+                        ],
+                        
+                        dom: 'Blfrtip',
+                        buttons: [
+                       {
+                           extend: 'pdf',
+                           title: 'Liste des Roles',
+                           footer: true,
+                           exportOptions: {
+                                columns: [0.1,2]
+                            }
+                       },
+                       {
+                           extend: 'csv',
+                           title: 'Liste des Roles',
+                           footer: false,
+                           exportOptions: {
+                                columns: [0.1,2]
+                            }
+                          
+                       },
+                       {
+                           extend: 'excel',
+                           footer: false,
+                           title: 'Liste des Roles',
+                           exportOptions: {
+                                columns: [0.1,2]
+                            }
+                       },
+                       {
+                           extend: 'print',
+                           title: 'Liste des Roles',
+                           footer: false,
+                           exportOptions: {
+                                columns: [0.1,2]
+                            }
+                       }         
+                    ]  
+                        
+                    }
+                );
+              function codeExiste(){
+                  
+                  
+              }
+                /******* fonction pour charger la liste des Roles dans la TableData Roles ******/
+              function populateRoleDataTable(){
+                  var tableData = $('#data_table_Role').DataTable();
+                  $('#data_table_Role').DataTable().rows().remove().draw();
+                  //tableData.DataTable().rows().remove().draw();		// Vider la TableData 
+                  $.ajax({
+                      url : "../Role/List",
+                      type: "GET",
+                      dataType: 'json',
+                      success: function(response,textStatus ,jqXHR){
+                          console.log(response);
+                          for(i=0;i<response.length;i++){
+                              var rang =i+1;
+                              var btns='<div class="btn-group dropleft"> \
+                                            <button type="button" class="btn btn-outline-info btn-sm" title="Actions"><span class="fa fa-ellipsis-h"></span></button> \
+                                            <button type="button" class="btn btn-outline-info btn-sm dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> \
+                                              <span class="sr-only">Toggle Dropdown</span> \
+                                            </button> \
+                                            <div class="dropdown-menu shadow p-3 mb-5 bg-white rounded" id="dropdownRole"> \
+                                              <div class="bg-info text-white px-3 py-1"><span class="fa fa-ellipsis-h mr-4"></span> Actions</div> \
+                                              <div class="dropdown-divider"></div> \
+                                                <a class="dropdown-item Role-details text-primary" href="#" RoleId="'+response[i].id+'"><span class="fa fa-info-circle mr-4"></span>Détails</a> \
+                                                <a class="dropdown-item Role-update text-primary" href="#" RoleId="'+response[i].id+'"><span class="fa fa-pen mr-4"></span>Modifier</a> \
+                                                <a class="dropdown-item Role-delete text-primary" href="#" RoleId="'+response[i].id+'"><span class="fa fa-trash mr-4"></span>Supprimer</a> \
+                                            </div> \
+                                          </div> ';
+                              tableData.row.add( [
+                                           rang,
+                                           response[i].code,
+                                           response[i].nom,
+                                           btns
+                                       ] ).draw( false );
+                          }
+                      },
+                      error: function(response,textStatus ,jqXHR){
+                          console.log("ROLE-ERROR");	
+                          $("#modalError .modal-body p").html("");
+                          $("#modalError .modal-body p").html(jqXHR.responseText);
+                             $('#modalError .modal-body p').modal('show'); 
+                          }
+                  });
+              };
+          
+   
+              /*
+               // Cahargement des Roles au chargement de la page
+              */
+              populateRoleDataTable();
+              /* Au click sur le tab Roles : 
+              /* On charger la liste des Roles dans la TableData Roles
+              */
+       
+              $('#tab_Role').on('click', function(e){
+                      // Effacer le DataTable Roles
+                      $('#data_table_Role').DataTable().rows().remove().draw();
+                      // Charger la liste des Roles dans le DataTable Roles
+                        populateRoleDataTable();
+                      e.preventDefault();
+              });
+    
+                /********** Ajouter un nouveau Role **********************/
+                //Effacer dabord le formulaire
+                    
+            
+                //Envoyer le formulaire via ajax
+                $("#Role_Add_Form").submit(function(event){ 
+                  var post_url = $(this).attr("action"); 			//Lire l'action (URL) du formulaire
+                  var request_method = $(this).attr("method"); 	//Lire la méthode du formulaire  GET/POST 
+                  var form_data = $(this).serialize(); 			//Encoder les données du formulaire pour envoie
+                  $('#Role_Add_Modal').modal('hide');			//Fermer la fenetre modal apres envoie du formulaire
+                  $.ajax({
+                      url :post_url ,
+                      type: request_method,
+                      data : form_data,
+                      success: function(response,textStatus ,jqXHR){
+                          if(response=="false"){
+                              $("#modalError .modal-body p").html("");
+                              $("#modalError .modal-body p").html("Ce Role est déja existe");
+                                 $('#modalError').modal('show'); 
+                          }
+                          else{
+                          console.log(response);
+                          console.log(status);
+                          console.log(jqXHR);
+                          $("#modalSuccess .modal-body p").html("");
+                          $("#modalSuccess .modal-body p").html("Added Succefully");
+                             $('#modalSuccess').modal('show');
+                             $('#Role_Add_Form').trigger('reset');
+                          }
+                          //setTimeout(function() { $('#modalSuccess').modal('hide'); }, 5000);
+                      },
+                      error: function(response,textStatus ,jqXHR){
+                          console.log("Erreur");
+                          console.log(response);
+                          console.log(status);
+                          console.log(jqXHR);
+                          $("#modalError .modal-body p").html("");
+                          $("#modalError .modal-body p").html(jqXHR.responseText);
+                             $('#modalError').modal('show'); 
+                          },
+                      complete: function (response,textStatus) {
+                          
+                          //Effacer le DataTable Roles
+                          $('#data_table_Role').DataTable().rows().remove().draw();
+                            //Raffrichir le DataTable Roles
+                          populateRoleDataTable();    
+                      }
+                  });
+                  return false;
+              });	
+                
+                /*********** Modification d'un Role ****************
+                /* 1 - Récuperer l' Id du Role séléctionner sur la DataTable Roles
+                /* 2 - Charger par ajax le Role concerné
+                /* 3 - Remplir les champs de formulaire de modification avec les données du Role concerné
+                /* 4 - Afficher le formulaire de modification
+                *****************************************************/
+                
+                $('#data_table_Role').on('click','.Role-update', function(evt){
+                  $this = $(this);
+                  var id= $(this).attr('RoleId');
+                  console.log(id);
+                  $.ajax({
+                      url : "/Role/Details?id="+id,
+                      type: "GET",
+                      dataType: 'json',
+                      contentType: "application/json; charset=UTF-8",
+                      success: function(response,textStatus ,jqXHR){
+                          $("#Role_Update_Form input[name=id]").val(response.id);
+                          $("#Role_Update_Form input[name=code]").val(response.code);
+                          $("#Role_Update_Form input[name=nom_Fr]").val(response.nom);
+                          $("#Role_Update_Form input[name=desc]").val(response.description);
+                          $('#Role_Update_Modal').modal('show');
+                      },
+                      error: function(response,textStatus ,jqXHR){
+                          $("#modalError .modal-body p").html("");
+                          $("#modalError .modal-body p").html(jqXHR.responseText);
+                             $('#modalError .modal-body p').modal('show'); 
+                          }
+                  });
+                  
+                  return false;
+              });
+                /* 5- Envoie du formulaire de modification */
+                
+                $("#Role_Update_Form").submit(function(event){ 
+                  var post_url = $(this).attr("action"); 			//Lire l'action (URL) du formulaire
+                  var request_method = $(this).attr("method"); 	//Lire la méthode du formulaire  GET/POST 
+                  var form_data = $(this).serialize(); 			//Encoder les données du formulaire pour envoie
+                  $('#Role_Update_Modal').modal('hide');			//Fermer la fenetre modal apres envoie du formulaire
+                  $.ajax({
+                      url : post_url,
+                      type: request_method,
+                      data : form_data,
+                      dataType: 'json',
+                      contentType: "application/x-www-form-urlencoded;charset=UTF-8",
+                      success: function(response,textStatus ,jqXHR){
+                          
+                          $("#modalSuccess .modal-body p").html("");
+                          $("#modalSuccess .modal-body p").html(response);
+                             $('#modalSuccess').modal('show');
+                          //setTimeout(function() { $('#modalSuccess').modal('hide'); }, 5000);
+                          
+                      },
+                      error: function(response,textStatus ,jqXHR){
+                          $("#modalError .modal-body p").html("");
+                          $("#modalError .modal-body p").html(response);
+                             $('#modalError').modal('show'); 
+                          },
+                      complete: function (response,textStatus) {	
+                          //Effacer le DataTable Roles
+                          $('#data_table_Role').DataTable().rows().remove().draw();
+                            //Raffrichir le DataTable Roles
+                          populateRoleDataTable();    
+                      }   
+                  });
+                  return false;
+              });	
+                /*********** Suppression d'un Role ****************
+                /* 1 - Récuperer l' Id du Role séléctionner sur la DataTable Roles
+                /* 2 - Supprimer par ajax le Role concerné
+                *****************************************************/
+                
+                $('#data_table_Role').on('click','.Role-delete', function(evt){
+                  $this = $(this);
+                  var id= $(this).attr('RoleId');
+                  $('#modalConfirm').modal('show');
+                  $('#modalConfirm').on('click', '#delete', function(e) {
+                      
+                          $.ajax({
+                              url : "../Role/Delete?id="+id,
+                              type: "GET",
+                              dataType: 'json',
+                              success: function(response,textStatus ,jqXHR){
+                                  $("#modalSuccess .modal-body p").html("");
+                                  $("#modalSuccess .modal-body p").html(response);
+                                     $('#modalSuccess').modal('show');
+                                  //setTimeout(function() { $('#modalSuccess').modal('hide'); }, 5000);
+                                  
+                              },
+                              error: function(response,textStatus ,jqXHR){
+                                  $("#modalError .modal-body p").html("");
+                                  $("#modalError .modal-body p").html(jqXHR.responseText);
+                                     $('#modalError').modal('show'); 
+                              },
+                              complete: function (response,textStatus ,jqXHR) {
+                                  
+                                  //Effacer le DataTable Roles
+                                  $('#data_table_Role').DataTable().rows().remove().draw();
+                                    //Raffrichir le DataTable Roles
+                                  populateRoleDataTable();    
+                              }
+                          });
+                    });
+                  
+                  
+                  return false;
+              });
+                
+                /*********** Affichage des détails d'un Role ****************
+                /* 1 - Récuperer l' Id du Role séléctionner sur la DataTable Roles
+                /* 2 - Charger par ajax le Role concerné
+                /* 3 - Afficher les détails du Role concerné 
+                *****************************************************/
+                
+                $('#data_table_Role').on('click','.Role-details', function(evt){
+                  $this = $(this);
+                  var id= $(this).attr('RoleId');
+                  $.ajax({
+                      url : "../Role/Details?id="+id,
+                      type: "GET",
+                      dataType: 'json',
+                      contentType: "application/json; charset=UTF-8",
+                      success: function(response,textStatus ,jqXHR){
+                          var id ='<li class="list-group-item"><span><strong>Id  </strong></span><span class="float-right">'+response.id+'</span></li>';
+                          var codeItem ='<li class="list-group-item"><span><strong>Code  </strong></span><span class="float-right">'+response.code+'</span></li>';
+                          var nom_FrItem ='<li class="list-group-item"><span><strong>Nom du Role  </strong></span><span class="float-right">'+response.nom+'</span></li>';
+                          var desc ='<li class="list-group-item"><span><strong>Description </strong></span><span class="float-right" dir="rtl">'+response.description+'</span></li>';
+                          $("#Role_Details_Modal .list-group").html("");
+                          $("#Role_Details_Modal .list-group").append(id);
+                          $("#Role_Details_Modal .list-group").append(codeItem);
+                          $("#Role_Details_Modal .list-group").append(nom_FrItem);
+                          $("#Role_Details_Modal .list-group").append(desc);
+                          $('#Role_Details_Modal').modal('show');
+                      },
+                      error: function(response,textStatus ,jqXHR){
+                          $("#modalError .modal-body p").html("");
+                          $("#modalError .modal-body p").html(jqXHR.responseText);
+                             $('#modalError .modal-body p').modal('show'); 
+                          }
+                  });
+                  
+                  return false;
+              });
+                
+                
+                
+                /************** DataTable du Tab : Ressources **************/
+                // Initialisation du DataTable Ressources
+                $('#data_table_Ressource').DataTable(
+                    {	
+                        "paging": true,
+                        "autoWidth": true,
+                        "columnDefs": [
+                            { "orderable": false, "targets": 4 }
+                        ],
+                        "columnDefs": [
+                           {
+                               "targets": [ 0 ],
+                               "visible": true,
+                               "searchable": false,
+                               "orderable": true
+                           },
+                           {
+                               "targets": [ 2 ],
+                               "visible": true
+                               
+                           }
+                         ],
+                        dom: 'Bfrtip',
+                        buttons: [
+                            'copy', 
+                            'csv', 
+                            'excel', 
+                            'pdf', 
+                            'print'
+                        ]
+                    }
+                );
+                /******* fonction pour charger la liste des Ressources dans la TableData Ressources ******/
+              function populateRessourceDataTable(){
+                  var tableData = $('#data_table_Ressource').DataTable();
+                  //tableData.DataTable().rows().remove().draw();		// Vider la TableData 
+                  $.ajax({
+                      url : "../Ressource/List",
+                      type: "GET",
+                      dataType: 'json',
+                      success: function(response,textStatus ,jqXHR){
+                          for(i=0;i<response.length;i++){
+                              var rang=i+1;
+                              var btns='<div class="btn-group dropleft"> \
+                                    <button type="button" class="btn btn-outline-info btn-sm" title="Actions"><span class="fa fa-ellipsis-h"></span></button> \
+                                    <button type="button" class="btn btn-outline-info btn-sm dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> \
+                                      <span class="sr-only">Toggle Dropdown</span> \
+                                    </button> \
+                                    <div class="dropdown-menu shadow p-3 mb-5 bg-white rounded" id="dropdownRole"> \
+                                      <div class="bg-info text-white px-3 py-1"><span class="fa fa-ellipsis-h mr-4"></span> Actions</div> \
+                                      <div class="dropdown-divider"></div> \
+                                        <a class="dropdown-item Ressource-details text-primary" href="#" RessourceId="'+response[i].id+'"><span class="fa fa-info-circle mr-4"></span>Détails</a> \
+                                        <a class="dropdown-item Ressource-update text-primary" href="#" RessourceId="'+response[i].id+'"><span class="fa fa-pen mr-4"></span>Modifier</a> \
+                                        <a class="dropdown-item Ressource-delete text-primary" href="#" RessourceId="'+response[i].id+'"><span class="fa fa-trash mr-4"></span>Supprimer</a> \
+                                    </div> \
+                                  </div> ';
+                              tableData.row.add( [
+                                           rang,
+                                           response[i].code,
+                                           response[i].url,
+                                           btns	
+                                       ] ).draw( false );
+                          }
+                      },
+                      error: function(response,textStatus ,jqXHR){
+                          $("#modalError .modal-body p").html("");
+                          $("#modalError .modal-body p").html(jqXHR.responseText);
+                             $('#modalError .modal-body p').modal('show'); 
+                          }
+                  });
+              };
+              
+              /* Au click sur le tab Ressources : 
+              /* On charger la liste des Ressources dans la TableData Ressources
+              */
+              
+              $('#tab_Ressource').on('click', function(e){
+                      // Effacer le DataTable Ressources
+                        $('#data_table_Ressource').DataTable().rows().remove().draw();
+                        // Charger la liste des Ressources dans le DataTable Ressources
+                        populateRessourceDataTable();
+                      e.preventDefault();
+              });
+                
+                /********** Ajouter une nouvelle Ressource **********************/
+                //Effacer dabord le formulaire
+                $('#Ressource_Add_Modal').on('shown.bs.modal', function(evt){
+                    $('#Ressource_Add_Form').trigger('reset');
+                });
+                
+                $("#Ressource_Add_Form").submit(function(event){ 
+                  var post_url = $(this).attr("action"); 			//Lire l'action (URL) du formulaire
+                  var request_method = $(this).attr("method"); 	//Lire la méthode du formulaire  GET/POST 
+                  var form_data = $(this).serialize(); 			//Encoder les données du formulaire pour envoie
+                  $('#Ressource_Add_Modal').modal('hide');			//Fermer la fenetre modal apres envoie du formulaire
+                  $.ajax({
+                      url : post_url,
+                      type: request_method,
+                      data : form_data,
+                      dataType: 'json',
+                      contentType: "application/x-www-form-urlencoded;charset=UTF-8",
+                      success: function(response,textStatus ,jqXHR){
+                          
+                    	  if(response=="false"){
+                              $("#modalError .modal-body p").html("");
+                              $("#modalError .modal-body p").html("Ce Role est déja existe");
+                                 $('#modalError').modal('show'); 
+                          }
+                          else{
+                          console.log(response);
+                          console.log(status);
+                          console.log(jqXHR);
+                          $("#modalSuccess .modal-body p").html("");
+                          $("#modalSuccess .modal-body p").html("Added Succefully");
+                             $('#modalSuccess').modal('show');
+                             $('#Role_Add_Form').trigger('reset');
+                          }
+                          //setTimeout(function() { $('#modalSuccess').modal('hide'); }, 5000);
+                      },
+                      error: function(textStatus ,jqXHR){
+                          console.log("Erreur");
+                          $("#modalError .modal-body p").html("");
+                          $("#modalError .modal-body p").html(jqXHR.responseText);
+                             $('#modalError').modal('show'); 
+                     },
+                     complete: function (response,textStatus ,jqXHR) {
+                          
+                          //Effacer le DataTable Roles
+                          $('#data_table_Ressource').DataTable().rows().remove().draw();
+                            //Raffrichir le DataTable Roles
+                          populateRessourceDataTable();    
+                      }
+                  });
+                  return false;
+              });	
+                
+                /*********** Modification d'une Ressource ****************
+                /* 1 - Récuperer l' Id de la Ressource séléctionner sur la DataTable Ressources
+                /* 2 - Charger par ajax le Ressource concerné
+                /* 3 - Remplir les champs de formulaire de modification avec les données du Ressource concerné
+                /* 4 - Afficher le formulaire de modification
+                *****************************************************/
+                
+                $('#data_table_Ressource').on('click','.Ressource-update', function(evt){
+                  $this = $(this);
+                  var id= $(this).attr('RessourceId');
+                  $.ajax({
+                      url : "../Ressource/Details?id="+id,
+                      type: "GET",
+                      dataType: 'json',
+                      contentType: "application/x-www-form-urlencoded;charset=UTF-8",
+                      success: function(response,textStatus ,jqXHR){
+                           $("#Ressource_Update_Form input[name=id]").val(response.id);
+                          $("#Ressource_Update_Form input[name=code]").val(response.code);
+                          $("#Ressource_Update_Form input[name=nom]").val(response.nom);
+                          $("#Ressource_Update_Form input[name=url]").val(response.url);
+                          $("#Ressource_Update_Form input[name=desc]").val(response.description);
+                          $("#Ressource_Update_Modal").modal('show'); 
+                      },
+                      error: function(textStatus ,jqXHR){
+                          console.log("Error");
+                          console.log(textStatus+" textStatus	");
+                          
+                          
+                          $("#modalError .modal-body p").html("");
+                          $("#modalError .modal-body p").html(jqXHR.responseText);
+                             $('#modalError .modal-body p').modal('show'); 
+                          }
+                  });
+              });
+                /* 5- Envoie du formulaire de modification */
+                
+                $("#Ressource_Update_Form").submit(function(event){ 
+                  var post_url = $(this).attr("action"); 			//Lire l'action (URL) du formulaire
+                  var request_method = $(this).attr("method"); 	//Lire la méthode du formulaire  GET/POST 
+                  var form_data = $(this).serialize(); 			//Encoder les données du formulaire pour envoie
+                  $('#Ressource_Update_Modal').modal('hide');		//Fermer la fenetre modal apres envoie du formulaire
+                  $.ajax({
+                      url : post_url,
+                      type: request_method,
+                      data : form_data,
+                      dataType: 'json',
+                      contentType: "application/x-www-form-urlencoded;charset=UTF-8",
+                      success: function(response,textStatus,jqXHR){
+                          $("#modalSuccess .modal-body p").html("");
+                          $("#modalSuccess .modal-body p").html("Added Succefully");
+                             $('#modalSuccess').modal('show');
+                             $('#Ressource_Update_Form').trigger('reset');
+                    
+                          
+                          //setTimeout(function() { $('#modalSuccess').modal('hide'); }, 5000);
+                      },
+                      error: function(response,textStatus ,jqXHR){
+                          $("#modalError .modal-body p").html("");
+                          $("#modalError .modal-body p").html(response);
+                             $('#modalError').modal('show'); 
+                      },
+                     complete: function (response,textStatus ,jqXHR) {
+                           //Effacer le DataTable Ressources
+                          $('#data_table_Ressource').DataTable().rows().remove().draw();
+                            //Raffrichir le DataTable Ressources
+                          populateRessourceDataTable();
+                                
+                      }
+                  });
+                  return false;
+              });
+                
+                /*********** Suppression d'une Ressource ****************
+                /* 1 - Récuperer l' Id du Ressource séléctionner sur la DataTable Ressources
+                /* 2 - Supprimer via ajax le Ressource concerné
+                *****************************************************/
+                
+                $('#data_table_Ressource').on('click','.Ressource-delete', function(evt){
+                  $this = $(this);
+                  var id= $this.attr('RessourceId');
+                  $('#modalConfirm').modal('show');
+                  $('#modalConfirm').on('click', '#delete', function(e) {
+                          $.ajax({
+                              url : "../Ressource/Delete?id="+id,
+                              type: "GET",
+                              dataType: 'json',
+                              success: function(response,textStatus ,jqXHR){
+                                  
+                                  $("#modalSuccess .modal-body p").html("");
+                                  $("#modalSuccess .modal-body p").html(response);
+                                     $('#modalSuccess').modal('show');
+                                  //setTimeout(function() { $('#modalSuccess').modal('hide'); }, 5000);
+                              },
+                              error: function(response,textStatus ,jqXHR){
+                              
+                                  $("#modalError .modal-body p").html("");
+                                  $("#modalError .modal-body p").html(jqXHR.responseText);
+                                     $('#modalError').modal('show'); 
+                              },
+                              complete: function (response,textStatus ,jqXHR) {
+                                   //Effacer le DataTable Ressources
+                                  $('#data_table_Ressource').DataTable().rows().remove().draw();
+                                    //Raffrichir le DataTable Ressources
+                                  populateRessourceDataTable();
+                                        
+                              }
+                          });
+                    });
+                  return false;
+              });
+                
+                /*********** Affichage des détails d'une Ressource****************
+                /* 1 - Récuperer l' Id de la filière séléctionner sur la DataTable Ressource
+                /* 2 - Charger par ajax la filière concernée
+                /* 3 - Afficher les détails la filière concernée
+                *****************************************************/
+                $('#data_table_Ressource').on('click','.Ressource-details', function(evt){
+                  $this = $(this);
+                  var id= $(this).attr('RessourceId');
+                  $.ajax({
+                      url : "../Ressource/Details?id="+id,
+                      type: "GET",
+                      dataType: "Json",
+                      contentType: "application/json; charset=UTF-8",
+                      success: function(response,textStatus ,jqXHR){
+                          console.log(response);
+                          console.log(textStatus);
+                          console.log(jqXHR);
+                          
+                          var id ='<li class="list-group-item"><span><strong>Id  </strong></span><span class="float-right">'+response.id+'</span></li>';
+                          var codeItem ='<li class="list-group-item"><span><strong>Code  </strong></span><span class="float-right">'+response.code+'</span></li>';
+                          var nom ='<li class="list-group-item"><span><strong>Nom de la Ressource  </strong></span><span class="float-right">'+response.nom+'</span></li>';
+                          var url ='<li class="list-group-item"><span><strong>URL</strong></span><span class="float-right" dir="rtl">'+response.url+'</span></li>';
+                          var desc ='<li class="list-group-item"><span><strong>Description </strong></span><span class="float-right" dir="rtl">'+response.description+'</span></li>';
+                          $("#Ressource_Details_Modal .list-group").html("");
+                          $("#Ressource_Details_Modal .list-group").append(id);
+                          $("#Ressource_Details_Modal .list-group").append(codeItem);
+                          $("#Ressource_Details_Modal .list-group").append(nom);
+                          $("#Ressource_Details_Modal .list-group").append(url);
+                          $("#Ressource_Details_Modal .list-group").append(desc);
+                          $('#Ressource_Details_Modal').modal('show');
+                      },
+                      error: function(response,textStatus ,jqXHR){
+                          $("#modalError .modal-body p").html("");
+                          $("#modalError .modal-body p").html(response);
+                             $("#modalError .modal-body p").modal('show'); 
+                          }
+                  });
+              
+              });
+  
+                
+                /************** DataTable du Tab : Permissions **************/
+                // Initialisation du DataTable Permissions
+                        
+                /******* fonction pour charger la liste des Permissions dans la TableData Permissions ******/
+                function populatePermissionDataTable(){
+                    $("#data_table_permissions tbody").html("");
+                    $("#data_table_permissions #th").html("");
+                  $.when(
+                    $.ajax({
+                      url: "../Role/List",
+                      type:"GET",
+                      dataType: "json"
+                    }),
+                    $.ajax({
+                      url: "../Ressource/List",
+                      type:"GET",
+                      dataType: "json"
+                    })
+                  ).done(function(roles, ressources) {
+                    $("#th").append("<th><span style='color:white'>Ressource</span>\\<span style='color:white' >Roles</span></th>");
+                    for(i=0;i<roles[0].length;i++)
+                      $("#th").append("<th>"+roles[0][i].code+"</th>");
+  
+                    var ligne;
+                    for(j=0;j<ressources[0].length;j++){
+                      $("#td").append("<tr>");
+                      $("#td").append("<th>"+ressources[0][j].url+"</th>");
+                      for(k=0;k<roles[0].length;k++){
+                        $("#td").append("<td><center><input value="+ressources[0][j].id+":"+roles[0][k].id+" name='permissions' type='Checkbox'></center></td>");
+                      }
+                      $("#td").append("</tr>");
+                    }
+  
+                  });
+                };
+                function check() {
+                    $.ajax({
+                        url: "../Permission/List",
+                          type:"GET",
+                          dataType: "json",
+                        success: function(response,textStatus ,jqXHR){
+                            var checkboxes = $('#Permission_Add_Form input[type="checkbox"]');
+                            checkboxes.each(function(e){
+                            for(i=0;i<response.length;i++)
+                                if(response[i].permission=="1" && $(this).val()==response[i]["ressource"].id+":"+response[i]["role"].id)
+                                    $(this).prop('checked',true);
+                                
+                            })
+                     },
+             error: function(response,textStatus ,jqXHR){
+                      
+                          }
+                    });
+                    };
+                  
+                $('#tab_Permissions').on('click', function(e){
+                    //clearTable() 
+                    populatePermissionDataTable();
+                    check();
+                    e.preventDefault();
+                });
+                
+                
+                
+                $("#Permission_Add_Form").submit(function(event){ 
+                    event.preventDefault();
+                    var checkboxes = $('#Permission_Add_Form input[type="checkbox"]');
+                    var permissions = [];
+                    checkboxes.each(function() {
+                      if ($(this).is(':checked')) {
+                        permissions.push($(this).val());
+                      }
+                    });
+                    $.ajax({    
+                        url: '/Permission/Add',
+                        type: 'POST',
+                        data: JSON.stringify(permissions),
+                        contentType: "application/json",    
+                        success: function(response, textStatus, jqXHR){
+                            $("#modalSuccess .modal-body p").html("");
+                            $("#modalSuccess .modal-body p").html(response);
+                            $('#modalSuccess').modal('show');
+                        },
+                        error: function(response, textStatus, jqXHR){
+                            $("#modalError .modal-body p").html("");
+                            $("#modalError .modal-body p").html(response);
+                            $('#modalError').modal('show'); 
+                        },
+                        complete: function (response, textStatus, jqXHR) {
+                            populatePermissionDataTable();
+                            check();
+                        },
+                    });
+                });    
+
+  
+            });
+            
+  
+      </script>
+</body>
+
+</html>

@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script src="https://kit.fontawesome.com/0b6d129e94.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+    <title>Document</title>
+<style>
+#login-modal .modal-header {
+    background: #2c4964;
+}
+    form p{
+        font-size: 15px;
+    }
+</style>
+</head>
+<body>
+    <div class="container-fluide">
+        <div class="holder bg-dark position-relative w-100 d-flex  justify-content-center">
+           <!-- My Navigation Bar -->
+           <div class="navbar navbar-expand-lg navbar-light bg-light w-100 position-fixed">
+            <div class="container">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <div class="links d-flex flex-wrap mx-auto gap-5 p-3">
+                        <div><a class="px-3 py-2" href="#">Home</a></div>
+                        <div><a class="px-3 py-2" href="#Localisation">Localisation</a></div>
+                        <div><a class="px-3 py-2" href="#about">About Us</a></div>
+                       
+                        <div class=""><a href="" data-bs-toggle="modal" data-bs-target="#login-modal">Login</a></div>
+                    </div>
+                </div>
+                 <div><a id="rdv-btn" class="apappointment-btn px-5 py-2 text-light" href="#rdv-form">Rendez-Vous</a></div>
+            </div>
+        </div>
+        
+        <!-- End Navigation Bar -->
+
+             <!-- ======= Quote Section ======= --> 
+             <div id="quote" class="d-flex position-absolute w-50">
+                <div class="">
+                  <h4>Welcome to Mon Cabinet Medical</h4>
+                  <h5 class="text-dark my-1">Lorem ipsum, dolor sit amet consectetur adipisicing elit. </h5>
+                  <a href="#" class="apappointment-btn px-4 py-2 m-2 ">Get Started</a>
+                </div>
+              </div>
+              <!-- Quote Section -->
+    
+            <!--My Rendez-vous Form  -->
+            
+            <div  class="rdv position-absolute p-2  w-75 ">
+
+                <div class="" id="rdv-form"></div>
+                <h4 class="p-2">Rendez-vous</h4>
+          
+                <form th:action="@{/Patient-rdv/save}" method="post" id="rdvForm" th:object="${patientRegistration}">
+                        <div class="row g-2 align-items-center p-1 justify-content-center">
+                            <div class="col-auto w-50">
+                                <label for="">Sexe :</label>
+                                <div class="form-check form-check-inline mx-5">
+                                    <input class="form-check-input" th:field="*{sexe}" type="radio" id="Sexe" name="sexe" value="M">
+                                    <label class="form-check-label" for="Sexe">Male</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" th:field="*{sexe}" type="radio" id="Sexe" name="sexe"  value="F">
+                                    <label class="form-check-label" for="Sexe">Female</label>
+                                </div>
+                                <p th:if="${#fields.hasErrors('sexe')}" class="text-danger" th:errors="*{sexe}">Prenom Error</p>
+                          
+                                </div>
+                            <div class="col-auto w-50">
+                                <div class="form-floating">
+                                    <input type="email" class="form-control" th:field="*{email}" id="email" placeholder="name@example.com">
+                                    <label for="email">Email address</label>   
+
+                                </div>
+                                <p th:if="${#fields.hasErrors('email')}" class="text-danger" th:errors="*{email}">Prenom Error</p>
+                            </div>
+                        </div>
+                        <div class="row g-2 align-items-center p-1 justify-content-center">
+                            <div class="col-auto w-50">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control" th:field="*{nom}" id="nom" placeholder="name@example.com">
+                                    <label for="floatingInput">Nom</label>
+                                </div>
+                                <p  th:if="${#fields.hasErrors('nom')}" class="text-danger" th:error="*{nom}">Nom error</p>
+                            </div>
+                            <div class="col-auto w-50">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control" th:field="*{tele}" id="tele" placeholder="name@example.com">
+                                    <label for="floatingInput">Telephone</label>
+                                    <p th:if="${#fields.hasErrors('tele')}" class="text-danger" th:errors="*{tele}">Tele Error</p>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row g-2 align-items-center p-1 justify-content-center">
+                            <div class="col-auto w-50">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control" th:field="*{prenom}" id="prenom" placeholder="name@example.com">
+                                    <label for="floatingInput">Prenom</label>
+                                    <p th:if="${#fields.hasErrors('prenom')}" class="text-danger" th:errors="*{prenom}">Prenom Error</p>
+                                </div>
+                            </div>
+                            <div class="col-auto w-50">
+                                <div class="form-floating">
+                                    <input type="datetime-local" class="form-control" th:field="*{dateRdv}" id="date" placeholder="">
+                                    <label for="floatingInput">Date</label>
+                                    <p th:if="${#fields.hasErrors('dateRdv')}" class="text-danger" th:errors="*{dateRdv}">Date Error</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row g-1 p-1 justify-content-center">
+                            <div class="col-auto w-100">
+                                <div class="form-floating">
+                                    <button  id="submitBtn" Class="btn btn-outline-primary w-100">Confirmer</button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                
+                 </form>   
+            </div>
+             <!--End My Rendez-vous Form  -->
+
+        </div>
+         <!-- ======= About Section ======= -->
+        <div class="" id="about"></div>
+        <section class="about">
+        <div class="container-fluid">
+
+            <h1 class="position-relative my-5 text-center">About Us</h1>
+            <div class="row">
+            <div class="col-xl-5 col-6 video-box d-flex justify-content-center align-items-stretch position-relative">
+                
+            </div>
+
+            <div class="col-xl-7 col-lg-6 icon-boxes d-flex flex-column align-items-stretch justify-content-center py-5 px-lg-5">
+                <h3>Enim quis est voluptatibus aliquid consequatur fugiat</h3>
+                <p>Esse voluptas cumque vel exercitationem. Reiciendis est hic accusamus. Non ipsam et sed minima temporibus laudantium. Soluta voluptate sed facere corporis dolores excepturi. Libero laboriosam sint et id nulla tenetur. Suscipit aut voluptate.</p>
+
+                <div class="icon-box">
+                <div class="icon"><i class="bx bx-fingerprint"></i></div>
+                <h4 class="title"><a href="">Lorem Ipsum</a></h4>
+                <p class="description">Voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident</p>
+                </div>
+
+                <div class="icon-box">
+                <div class="icon"><i class="bx bx-gift"></i></div>
+                <h4 class="title"><a href="">Nemo Enim</a></h4>
+                <p class="description">At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque</p>
+                </div>
+
+                <div class="icon-box">
+                <div class="icon"><i class="bx bx-atom"></i></div>
+                <h4 class="title"><a href="">Dine Pad</a></h4>
+                <p class="description">Explicabo est voluptatum asperiores consequatur magnam. Et veritatis odit. Sunt aut deserunt minus aut eligendi omnis</p>
+                </div>
+
+            </div>
+            </div>
+
+        </div>
+        </section>
+        <!-- End About Section -->
+
+        <!-- Localisation -->
+        <div class="" id="Localisation"></div>
+        <h1 class="position-relative my-5 text-center">Localisation</h1>
+        <iframe 
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d13192.389530515855!2d-6.603327139009778!3d34.246058655480205!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xda759f000000001%3A0xb0f2670fb7c990f7!2sIbn%20Tofail%20University!5e0!3m2!1sen!2sma!4v1715474866916!5m2!1sen!2sma" 
+            width="100%"
+            height="400px"
+            style="border:0;" 
+            allowfullscreen="" 
+            loading="lazy" 
+            referrerpolicy="no-referrer-when-downgrade">
+        </iframe>
+        <!-- End Localisation -->
+    <!-- Reviews  -->
+      <div id="reviews" class="container">
+        <h1 class="position-relative my-5 text-center">Our Clients Reviews</h1>
+        <div class="row gap-5 justify-content-center">
+            <div class="card" style="width: 18rem;">
+                <img class="card-img-top" th:src="@{/img/doctors/doctors-4.jpg}" alt="Card image cap">
+                <div class="card-body">
+                  <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                </div>
+                <div class="card-footer mx-auto">
+                    <i class="fa-solid fa-star" style="color: #FFD43B;"></i>
+                    <i class="fa-solid fa-star" style="color: #FFD43B;"></i>
+                    <i class="fa-solid fa-star" style="color: #FFD43B;"></i>
+                    <i class="fa-solid fa-star" style="color: #FFD43B;"></i>
+                    <i class="fa-solid fa-star" style="color: #FFD43B;"></i>
+                </div>
+              </div>
+              <div class="card" style="width: 18rem;">
+                <img class="card-img-top" src="/img/doctors/doctors-2.jpg" alt="Card image cap">
+                <div class="card-body">
+                  <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                </div>
+                <div class="card-footer mx-auto">
+                    <i class="fa-solid fa-star" style="color: #FFD43B;"></i>
+                    <i class="fa-solid fa-star" style="color: #FFD43B;"></i>
+                    <i class="fa-solid fa-star" style="color: #FFD43B;"></i>
+                    <i class="fa-solid fa-star" style="color: #FFD43B;"></i>
+                    <i class="fa-solid fa-star" style="color: #FFD43B;"></i>
+                </div>
+              </div>
+              <div class="card" style="width: 18rem;">
+                <img class="card-img-top" src="/img/doctors/doctors-3.jpg" alt="Card image cap">
+                <div class="card-body">
+                  <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                </div>
+                <div class="card-footer mx-auto">
+                    <i class="fa-solid fa-star" style="color: #FFD43B;"></i>
+                    <i class="fa-solid fa-star" style="color: #FFD43B;"></i>
+                    <i class="fa-solid fa-star" style="color: #FFD43B;"></i>
+                    <i class="fa-solid fa-star" style="color: #FFD43B;"></i>
+                    <i class="fa-solid fa-star" style="color: #FFD43B;"></i>
+                </div>  
+              </div>
+        </div>
+
+
+      </div>
+    <!-- End Reviews -->
+
+    <!--  Footer Section -->
+        <footer class="text-center text-lg-start bg-body-tertiary mt-5 text-muted">
+            <!-- Section: Social media -->
+            <section class="d-flex justify-content-center justify-content-lg-between p-4 border-bottom">
+            <!-- Left -->
+            <div class="me-5 d-none d-lg-block">
+                <span>Get connected with us on social networks:</span>
+            </div>
+            <!-- Left -->
+        
+            <!-- Right -->
+            <div>
+                <a href="" class="me-4 text-reset">
+                <i class="fab fa-facebook-f"></i>
+                </a>
+                <a href="" class="me-4 text-reset">
+                <i class="fab fa-twitter"></i>
+                </a>
+                <a href="" class="me-4 text-reset">
+                <i class="fab fa-google"></i>
+                </a>
+                <a href="" class="me-4 text-reset">
+                <i class="fab fa-instagram"></i>
+                </a>
+                <a href="" class="me-4 text-reset">
+                <i class="fab fa-linkedin"></i>
+                </a>
+                <a href="" class="me-4 text-reset">
+                <i class="fab fa-github"></i>
+                </a>
+            </div>
+            <!-- Right -->
+            </section>
+            <!-- Section: Social media -->
+        
+            <!-- Section: Links  -->
+            <section class="">
+            <div class="container text-center text-md-start mt-5">
+                <!-- Grid row -->
+                <div class="row mt-3">
+                <!-- Grid column -->
+                <div class="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4">
+                    <!-- Content -->
+                    <h6 class="text-uppercase fw-bold mb-4">
+                    <i class="fas fa-star me-3"></i>MonCabinetMedicale
+                    </h6>
+                    <p>
+                   Bienvenu Sur notre Cabiner Medicale <b>MonCabinetMedicale</b>
+                    </p>
+                </div>
+                <!-- Grid column -->
+        
+                <!-- Grid column -->
+                <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4">
+                    <!-- Links -->
+                    <h6 class="text-uppercase fw-bold mb-4">
+                    Products
+                    </h6>
+                    <p>
+                    <a href="#!" class="text-reset">Consutation</a>
+                    </p>
+                    <p>
+                    <a href="#!" class="text-reset">Rendez-vous</a>
+                    </p>
+                    <p>
+                    <a href="#!" class="text-reset">Suivi</a>
+                    </p>
+                    <p>
+                    <a href="#!" class="text-reset">Carte Client</a>
+                    </p>
+                </div>
+                <!-- Grid column -->
+        
+                <!-- Grid column -->
+                <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mb-4">
+                    <!-- Links -->
+                    <h6 class="text-uppercase fw-bold mb-4">
+                    Useful links
+                    </h6>
+                    <p>
+                    <a href="#Localistaion" class="text-reset">Localisation</a>
+                    </p>
+                    <p>
+                    <a href="#about" class="text-reset">About Us</a>
+                    </p>
+                    <p>
+                    <a href="#rdv-form" class="text-reset">Rendez-vous</a>
+                    </p>
+                    <p>
+                    <a href="#" class="text-reset">Home</a>
+                    </p>
+                </div>
+                <!-- Grid column -->
+        
+                <!-- Grid column -->
+                <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4">
+                    <!-- Links -->
+                    <h6 class="text-uppercase fw-bold mb-4">Contact</h6>
+                    <p><i class="fas fa-home me-3"></i> Ibn Tofail University </p>
+                    <p>
+                    <i class="fas fa-envelope me-3"></i>
+                    docteur@gmail.com
+                    </p>
+                    <p><i class="fas fa-phone me-3"></i> +212 6 45 67 43 24</p>
+                    <p><i class="fas fa-phone me-3"></i> +212 5 47 87 90 09</p>
+                </div>
+                <!-- Grid column -->
+                </div>
+                <!-- Grid row -->
+            </div>
+            </section>
+            <!-- Section: Links  -->
+        
+            <!-- Copyright -->
+            <div class="text-center p-4" style="background-color: rgba(0, 0, 0, 0.05);">
+            © 2021 Copyright:
+            <a class="text-reset fw-bold" href="">moncabinetmedicale.com</a>
+            </div>
+            <!-- Copyright -->
+        </footer>
+        <!-- Footer -->
+
+    <!-- End Footer -->
+
+
+    </div>
+
+  <!-- Login Modal -->
+  <div class="modal fade" id="login-modal" tabindex="-1" aria-labelledby="login-modal" aria-hidden="true">
+    <form id="login-form" th:action="@{/login}" method="post">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-light">Login</h5>
+                    <button type="button" class="btn-close text-light" id="close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                			 <div class="alerts-container justify-content-center"> 
+                                 <div th:if="${param.error}">
+                                 <input type="hidden" id="error" value="true"/>
+						            Invalid username and password.
+						        </div>
+						        <div th:if="${param.logout}">
+						          <input type="hidden" id="logout" value="true"/>
+						            You have been logged out.
+						        </div>  
+                            </div>
+                    <div class="form-floating mb-3">
+                        <input type="email" class="form-control" id="Email" name="username" placeholder="name@example.com" required>
+                        <label for="Email">Email</label>
+                    </div>
+                    <div class="form-floating">
+                        <input type="password" class="form-control" id="Password" name="password" placeholder="*********" required>
+                        <label for="Password">Password</label>
+                    </div>
+                    
+                    <div class="">
+                        <label for="Password" class="text-primary">Mot de Passe oublié:</label>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="reset" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Login</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<!-- End Login Modal -->
+
+
+     <!-- Code Verification Modal -->
+    <div class="modal fade" id="verification-modal" tabindex="-1" aria-labelledby="verification-modal" aria-hidden="true">
+        <form id="verificationForm" method="get"  >
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <div><center><p> A verification code has been sent to you email </p></center></div>
+                    <button type="button" class="btn-close text-light" id="close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        
+                            <div class="alerts-container justify-content-center"> 
+                                   
+                            </div>
+                            <div class="row justify-content-between">
+                                <div class="col">
+                                    <input type="text" class="form-control form-control-square" id="C1" inputmode="numeric" pattern="\d" min="0" max="9" maxlength="1" required>          
+                                </div>
+                                <div class="col">
+                                    <input type="text" class="form-control form-control-square" id="C2" inputmode="numeric" pattern="\d" min="0" max="9" maxlength="1"  required>
+                                </div>
+                                <div class="col">
+                                    <input type="text" class="form-control form-control-square" id="C3" inputmode="numeric" pattern="\d" min="0" max="9" maxlength="1"  required>
+                                </div>
+                                <div class="col">
+                                    <input type="text" class="form-control form-control-square" id="C4" inputmode="numeric" pattern="\d" min="0" max="9" maxlength="1"  required>
+                                </div>
+                            </div>
+                            <div class="form-group mt-3">
+                             
+                            </div>
+                         
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" id="v-button" class="btn btn-primary btn-block">verify code</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+     <!-- End Login Modal -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script>
+    $(document).ready(function() {
+      
+    	   if($("#login-modal #error").val()==true || $("#login-modal #logout").val()==true )
+               $("#login-modal").modal("show");
+
+            const dateInput = $('#date');
+
+            dateInput.on('input', function() {
+                const selectedDate = new Date(dateInput.val());
+                const hours = selectedDate.getHours();
+
+                if (hours < 8 || hours > 17 ) {
+                    alert('Vueillez choisir une autre heure, cette heure est reservé');
+                    dateInput.val('');
+                }
+         
+        });
+        $("#submit-btn").on("click", function(event) {
+            document.location.href="/E.Patients/index?id=23";
+
+
+
+        });
+        $("#submitBtn").on("click", function(event) {
+            event.preventDefault();
+            
+            const email = $("#rdvForm #email").val().trim();
+            const nom = $("#rdvForm #nom").val().trim();
+            const prenom = $("#rdvForm #prenom").val().trim();
+            const sexe = $("#rdvForm input[name='sexe']:checked").val();
+            const tele = $("#rdvForm #tele").val().trim();
+            const date = $("#rdvForm #date").val().trim();
+    
+            if (email !== "" && nom !== "" && prenom !== "" && typeof sexe !== "undefined" && tele !== "" && date !== "") {
+                console.log("EMAIL: " + email);
+                $.ajax({
+                    type: 'POST',
+                    url: '/send-email',
+                    data: { email: email },
+                    success: function(response) {
+                        $("#verification-modal").modal('show');
+                    },
+                    error: function(xhr, status, error) {
+                        $("#verification-modal").modal('show');
+                    }
+                });
+            } else {
+                $("#rdvForm").submit();
+            }
+        });
+    
+        $('#verificationForm').submit(function(event) {
+            event.preventDefault();
+    
+            const C1 = $('#C1').val();
+            const C2 = $('#C2').val();
+            const C3 = $('#C3').val();
+            const C4 = $('#C4').val();
+            const code = parseInt(C1 + C2 + C3 + C4);
+    
+            $.ajax({
+                type: 'GET',
+                url: '/VerifierCode',
+                data: { code: code },
+                success: function(response) {
+                    console.log(response);
+                    if (response === false) {
+                        $('#verificationForm .alerts-container').html('<div class="alert alert-danger" role="alert">Invalid Code!</div>');
+                    } else {
+                        $('#verificationForm .alerts-container').html('<div class="alert alert-success" role="alert">Valid Code!</div>');
+                        $("#rdvForm").submit(); 
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error(xhr.responseText);
+                    $('.alerts-container').html('<div class="alert alert-danger" role="alert">Error verifying code!</div>');
+                }
+            });
+        });
+    });
+     </script>
+</body>
+</html>

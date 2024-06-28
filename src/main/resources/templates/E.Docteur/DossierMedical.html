@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>Listes des Patients</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="" name="keywords">
+    <meta content="" name="description">
+
+    <!-- Favicon -->
+    <link href="img/favicon.ico" rel="icon">
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Icon Font Stylesheet -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+    <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+    <link href="lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css" rel="stylesheet" />
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="/css/Docteur/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Template Stylesheet -->
+    <link href="/css/Docteur/css/style.css" rel="stylesheet">
+   <script src="https://kit.fontawesome.com/0b6d129e94.js" crossorigin="anonymous"></script>
+
+   <!-- Data table  -->
+   <link rel="stylesheet" href=" https://cdn.datatables.net/2.0.7/css/dataTables.dataTables.min.css">
+   <link rel="stylesheet" href="https://cdn.datatables.net/2.0.7/css/dataTables.bootstrap5.min.css">
+   <link rel="stylesheet" href="https://cdn.datatables.net/autofill/2.7.0/css/autoFill.bootstrap5.min.css">
+ 
+   <style>
+    body{
+        overflow-x:none;
+    }
+    .patients_table{
+        overflow-x: auto;
+    }
+    thead{
+        background-color: #2c4964;
+    }
+    #confirm-modal i,#success-modal i {
+        width:60px;
+        height:60px;
+    }
+
+   </style>
+    <style>
+        .card {
+            margin:3pc;
+        }
+        .profile-img {
+            width: 100px;
+            height: 100px;
+            border: 1px solid black;
+            display: block;
+            margin: auto;
+        }
+        #rendezvous-list .list-item:hover,#consults-list .list-item:hover{
+              background-color: #dfdfdfb3;
+              color:rgb(120, 119, 119);
+
+        }
+        #rendezvous-list .list-item i:hover,#consults-list .list-item i:hover{
+             font-size:25px;
+        }
+        #rendezvous-list .list-item,#consults-list .list-item{
+              border-top: 1px solid rgb(193, 193, 193);
+              border-bottom: 1px solid rgb(193, 193, 193);
+              display:flex;
+
+        }
+        .consults-holder{
+            display: flex;
+            flex-direction: column;
+            flex-wrap: nowrap;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="container-xxl position-relative bg-white d-flex p-0">
+        <!-- Spinner Start -->
+        <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+            <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
+        <!-- Spinner End -->
+
+
+        <!-- Sidebar Start -->
+      <div th:replace="E.Docteur/sidebar2.html"></div>
+
+        <!-- Sidebar End -->
+
+
+        <!-- Content Start -->
+        <div class="content">
+            <!-- Navbar Start -->
+            <nav class="navbar navbar-expand bg-light navbar-light sticky-top px-4 py-0">
+                <a href="#" class="sidebar-toggler flex-shrink-0">
+                    <i class="fa fa-bars"></i>
+                </a>
+                    <div class="nav-item dropdown text-end">
+                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+                            <img class="rounded-circle me-lg-2" src="img/user.jpg" alt="" style="width: 40px; height: 40px;">
+                            <span class="d-none d-lg-inline-flex">John Doe</span>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-end bg-light border-0 rounded-0 rounded-bottom m-0">
+                            <a href="#" class="dropdown-item">My Profile</a>
+                            <a href="#" class="dropdown-item">Settings</a>
+                            <a href="#" class="dropdown-item">Log Out</a>
+                        </div>
+                    </div>
+            </nav>
+      <!-- Navbar End -->
+
+            <!-- Page Content Name -->
+            <div class="container pt-4 mt-3 px-4">
+                <div class="alert bg-light text-secondary " role="alert">
+                    <i class="fa-solid fa-hospital-user me-2" ></i>
+                    Dossier Medical
+              
+             </div>     
+            </div>
+            <!-- End Page Content Name -->
+   
+        <div class="print-section">
+            <!-- info du Patient -->
+            <div class="card">
+                <div class="card-header">
+                    <button class="btn btn-outline-secondary"  id="print-button" >print</button>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4 align-items-center">
+                            <img src="/img/doctors/doctors-1.jpg" width="150px" height="150px" class="rounded">
+                        </div>
+                        <div class="col-md-4">
+                            <p><strong>Nom: </strong><span th:text=" ${dossierMedical.patient.nom}"></span> </p>
+                            <p><strong>Prenom: </strong><span th:text=" ${dossierMedical.patient.prenom}"></span> </p>
+                            <p><strong>Tél: </strong><span th:text=" ${dossierMedical.patient.tele}"></span> </p>
+                            <p><strong>Email: </strong><span th:text=" ${dossierMedical.patient.email}"></span> </p>
+                            
+                        </div>
+                        <div class="col-md-4">
+                            <p><strong>Nom Dossier: </strong><span th:text=" ${dossierMedical.nom}"></span> </p>
+                            <p><strong>Allergies: </strong><span th:text=" ${dossierMedical.allergies}"></span> </p>
+                            <p><strong>Group sanguin: </strong><span th:text=" ${dossierMedical.groupSanguin}"></span> </p>
+                            <p><strong>Traitement : </strong><span th:text=" ${dossierMedical.traitementEnCours}"></span> </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer bg-light">
+                    <div class="card-title mx-auto text-center">  <p><strong>Date Creation: </strong><span th:text=" ${dossierMedical.dateCreation}"></span> </p></div>
+                </div>
+            </div>
+         
+            <!-- End Table Patients -->
+
+        <!-- Liste des rendez-vous  -->
+            <div class="fixed-section bg-light p-3 mx-5 rounded d-flex justify-content-between align-items-center">
+                <span>Liste Des rendez vous</span>
+                <button class="btn btn-link p-0" data-bs-toggle="collapse" data-bs-target="#rendezvous-list">
+                    <i class="fa fa-angle-down"></i>
+                </button>
+            </div>
+            <div class=" bg-light mx-5 d-flex justify-content-between align-items-center">
+                
+                <div  id="rendezvous-list" class="collapse w-100 p-0" >
+                    <div class="list-item d-flex justify-content-between p-3">
+                        <div th:if="${rdvs ==null}">
+                            No Data Available !!
+                        </div>
+                        <div  th:each="rdv :${rdvs}" >
+                            <div th:if="${rdv.date != null}">
+                                <p><strong>Date et heure: </strong><span th:text="${rdv.date}"></span> </p>
+                                <p><strong>Type Maladie: </strong><span th:text="${rdv.typeMaladie}"></span> </p>
+                                <span><a href=""><i class="fa fa-trash" style="color:black"></i></a></span>
+                            </div>
+                        </div>
+                       
+                       
+                       
+                    </div>
+                </div>
+            </div>
+            <!-- Liste des Consultations -->
+            <div>
+                <div class="fixed-section bg-light p-3 mx-5 mt-3 rounded d-flex justify-content-between align-items-center">
+                    <span>Liste Des Consultations<a class="btn btn-outline-primary btn-sm mx-2" id="showAddConsultationModal"><i class="fa fa-plus 
+                        "></i></a></span>
+                    
+                    <button class="btn btn-link p-0" data-bs-toggle="collapse" data-bs-target="#consults-list">
+                        <i class="fa fa-angle-down"></i>
+                    </button>
+                </div>
+                <div class="bg-light mx-5 d-flex justify-content-between align-items-center">
+                    <div id="consults-list" class="collapse w-100 p-0">
+                        <div class="list-item d-flex justify-content-between p-3">
+                            <div th:if="${consults == null}">
+                                No Data Available !!
+                            </div>
+                            <div class="consults-holder" th:each="consult : ${consults}">
+                                <div class=" row d-flex align-items-center w-100">
+                                    <div class="col-md-10">
+                                        <p><strong>Date: </strong><span th:text="${consult.date}"></span></p>
+                                        <p><strong>Motif: </strong><span th:text="${consult.motif}"></span></p>
+                                        <p><strong>Prix: </strong><span th:text="${consult.prix}"></span></p>
+                                    </div>
+                                    <div class="btn-group dropleft col-md-2">
+                                        <button type="button" class="btn btn-outline-info btn-sm" title="Actions">
+                                            <span class="fa fa-ellipsis-h"></span>
+                                        </button>
+                                        <button type="button" class="btn btn-outline-info btn-sm dropdown-toggle dropdown-toggle-split"
+                                                data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <span class="sr-only">Toggle Dropdown</span>
+                                        </button>
+                                        <div class="dropdown-menu shadow p-3 mb-5 bg-white rounded">
+                                            <div class="bg-primary text-light px-3 py-1"><span class="fa fa-ellipsis-h mr-4"></span> Actions</div>
+                                            <div class="dropdown-divider"></div>
+                                            <a class="dropdown-item patient-update text-primary" href="#" data-bs-toggle="modal"
+                                                data-bs-target="#editConsultationModal" data-consult-id="${consult.id}">
+                                                <span class="fa fa-pen me-2"></span> Modifier
+                                            </a>
+                                            <a class="dropdown-item patient-delete text-primary" href="#" data-bs-toggle="modal"
+                                                data-bs-target="#deleteConsultationModal" data-consult-id="${consult.id}">
+                                                <span class="fa fa-trash me-2"></span> Supprimer
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- End Liste des Consultations -->
+
+
+
+            <!-- Footer Start -->
+             <div th:replace="layouts/footer.html"></div>
+             <!-- Footer End -->
+        </div>
+        <!-- Content End -->
+
+
+        <!-- Back to Top -->
+        <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
+    </div>
+ 
+  
+  
+
+<!-- Confirm delete Modal -->
+<div class="modal fade" id="confirmation-modal" tabindex="-1" aria-labelledby="login-modal" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title mx-auto text-center">
+                        <i class="fa-solid fa-triangle-exclamation fa-beat" style="color: #FFD43B;"></i>
+                    </h5>
+                    <button type="button" class="btn-close text-light" id="close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  By Deleting the Patient the medical file and all the information related to the patient are going to be deleted
+                </div>
+                <div class="modal-footer mx-auto text-center">
+                <button type="button" class="btn btn-danger confirm-btn" data-bs-dismiss="modal">Confirmer</button>
+                <button type="button" class="btn btn-secondary cancel-btn">Annuler</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+ <!-- End Confirm delete Modal -->
+
+ <!-- Echec delete Modal -->
+<div class="modal fade" id="echec-modal" tabindex="-1" aria-labelledby="login-modal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header d-flex justify-content-center">
+            <h5 class="modal-title mx-auto" ><i class="fa-regular fa-triangle-exclamation fa-beat" style="color: #FFD43B;"></i>FAILURE</h5>
+            <button type="button" class="btn-close text-light" id="close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+            
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Confirmer</button>
+            </div>
+        </div>
+    </div>
+
+</div>
+<!-- End Echec delete Modal -->
+
+ <!-- delete success Modal -->
+<div class="modal fade" id="success-modal" tabindex="-1" aria-labelledby="login-modal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header d-flex justify-content-center">
+            <h5 class="modal-title mx-auto" ><i class="fa-solid fa-circle-check" style="color: #63E6BE;"></i>SUCCESS</h5>
+            <button type="button" class="btn-close text-light" id="close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+             
+            </div>
+            <div class="modal-footer justify-content-center">
+            <button type="button" class="btn btn-success confirm-btn" data-bs-dismiss="modal">Ok</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End  delete success Modal -->
+
+<!-- Add Consultation Modal -->
+<div class="modal fade" id="addConsultationModal" tabindex="-1" aria-labelledby="addConsultationModalLabel" aria-hidden="true">
+    <form th:action="@{/consultation/save}" th:object="${ConsultationOrdonnanceDto}" method="post">
+        
+        <div class="modal-dialog modal-dialog-centered modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addConsultationModalLabel">Add New Consultation</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <ul class="nav nav-tabs" id="addConsultationTabs" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="consultationInfo-tab" data-bs-toggle="tab" data-bs-target="#consultationInfo" type="button" role="tab" aria-controls="consultationInfo" aria-selected="true">Consultation Info</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="ordonnanceInfo-tab" data-bs-toggle="tab" data-bs-target="#ordonnanceInfo" type="button" role="tab" aria-controls="ordonnanceInfo" aria-selected="false">Ordonnance Info</button>
+                        </li>
+                    </ul>
+                    <div class="tab-content mt-3" id="addConsultationTabsContent">
+                        <!-- Consultation Info Tab -->
+                        <div class="tab-pane fade show active" id="consultationInfo" role="tabpanel" aria-labelledby="consultationInfo-tab">
+                            <!-- Form for Consultation Info -->
+                            <div class="mb-3">
+                                <input type="hidden" th:field="*{dossierId}" th:value="${md_id}">
+                                <input type="date" th:field="*{date}" class="form-control" id="date_c" name="date">
+                                <div th:if="${#fields.hasErrors('date')}" th:errors="*{date}" class="text-danger"></div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="motif" class="form-label">Motif:</label>
+                                <input type="text" class="form-control" th:field="*{motif}" id="motif" name="motif">
+                                <div th:if="${#fields.hasErrors('motif')}" th:errors="*{motif}" class="text-danger"></div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="prix" class="form-label">Prix:</label>
+                                <input type="text" class="form-control" th:field="*{prix}" id="prix" name="prix">
+                                <div th:if="${#fields.hasErrors('prix')}" th:errors="*{prix}" class="text-danger"></div>
+                            </div>
+                        </div>
+                        <!-- End Consultation Info Tab -->
+
+                        <!-- Ordonnance Info Tab -->
+                        <div class="tab-pane fade" id="ordonnanceInfo" role="tabpanel" aria-labelledby="ordonnanceInfo-tab">
+                            <!-- Form for Ordonnance Info -->
+                            <div class="mb-3">
+                                <label for="medicament" class="form-label">Medicament:</label>
+                                <input type="text" class="form-control" th:field="*{medicament}" id="medicament" name="medicament">
+                                <div th:if="${#fields.hasErrors('medicament')}" th:errors="*{medicament}" class="text-danger"></div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="dosage" class="form-label">Dosage:</label>
+                                <input type="text" class="form-control" th:field="*{dosage}" id="dosage" name="dosage">
+                                <div th:if="${#fields.hasErrors('dosage')}" th:errors="*{dosage}" class="text-danger"></div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="duree" class="form-label">Durée:</label>
+                                <input type="text" class="form-control" th:field="*{duree}" id="duree" name="duree">
+                                <div th:if="${#fields.hasErrors('duree')}" th:errors="*{duree}" class="text-danger"></div>
+                            </div>
+                        </div>
+                        <!-- End Ordonnance Info Tab -->
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<!-- End Add Consultation Modal -->
+
+
+<!-- Edit Consultation Modal -->
+<div class="modal fade" id="editConsultationModal" tabindex="-1" aria-labelledby="editConsultationModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editConsultationModalLabel">Edit Consultation</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <ul class="nav nav-tabs" id="editConsultationTabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="editConsultationInfo-tab" data-bs-toggle="tab" data-bs-target="#editConsultationInfo" type="button" role="tab" aria-controls="editConsultationInfo" aria-selected="true">Consultation Info</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="editOrdonnanceInfo-tab" data-bs-toggle="tab" data-bs-target="#editOrdonnanceInfo" type="button" role="tab" aria-controls="editOrdonnanceInfo" aria-selected="false">Ordonnance Info</button>
+                    </li>
+                </ul>
+                <div class="tab-content mt-3" id="editConsultationTabsContent">
+                    <!-- Edit Consultation Info Tab -->
+                    <div class="tab-pane fade show active" id="editConsultationInfo" role="tabpanel" aria-labelledby="editConsultationInfo-tab">
+                        <!-- Form for Edit Consultation Info -->
+                        <form id="editConsultationInfoForm">
+                            <div class="mb-3">
+                                <label for="editConsultDate" class="form-label">Date:</label>
+                                <input type="text" class="form-control" id="editConsultDate" name="editConsultDate">
+                            </div>
+                            <div class="mb-3">
+                                <label for="editmedicament" class="form-label">Motif:</label>
+                                <input type="text" class="form-control" id="editMotif" name="editMotif">
+                            </div>
+                            <div class="mb-3">
+                                <label for="editPrix" class="form-label">Prix:</label>
+                                <input type="text" class="form-control" id="editPrix" name="editPrix">
+                            </div>
+                        </form>
+                    </div>
+                    <!-- End Edit Consultation Info Tab -->
+
+                    <!-- Edit Ordonnance Info Tab -->
+                    <div class="tab-pane fade show" id="editOrdonnanceInfo" role="tabpanel" aria-labelledby="editOrdonnanceInfo-tab">
+                        <!-- Form for Edit Ordonnance Info -->
+                        <form id="editOrdonnanceInfoForm">
+                            <div class="mb-3">
+                                <label for="editMedicament" class="form-label">Medicament:</label>
+                                <input type="text" class="form-control" id="editMedicament" name="editMedicament">
+                            </div>
+                            <div class="mb-3">
+                                <label for="editDosage" class="form-label">Dosage:</label>
+                                <input type="text" class="form-control" id="editDosage" name="editDosage">
+                            </div>
+                            <div class="mb-3">
+                                <label for="editDuree" class="form-label">Durée:</label>
+                                <input type="text" class="form-control" id="editDuree" name="editDuree">
+                            </div>
+                        </form>
+                    </div>
+                    <!-- End Edit Ordonnance Info Tab -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save Changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Edit Consultation Modal -->
+
+<!-- Delete Consultation Modal -->
+<div class="modal fade" id="deleteConsultationModal" tabindex="-1" aria-labelledby="deleteConsultationModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteConsultationModalLabel">Confirm Delete</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete this consultation?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-danger">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Delete Consultation Modal -->
+
+
+    <!-- JavaScript Libraries -->
+    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Template Javascript -->
+    <script src="/js/main.js"></script>
+
+    <script>
+        $(document).ready(function() {
+    // Add Consultation Modal Show
+    $('#showAddConsultationModal').click(function() {
+        $('#addConsultationModal').modal('show');
+    });
+
+    function getUrlParameter(name) {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get(name);
+}
+
+
+const id = getUrlParameter('id');
+
+$("#addConsultationModal #dossierId ").val(id);
+    // Edit Consultation Modal Show
+    $('.editConsultationBtn').click(function() {
+        // Fetch consultation details from the respective row (assuming you have a data attribute to store consultation ID)
+        var consultationId = $(this).closest('tr').data('consultation-id');
+
+        // Fetch and populate data in the edit modal based on the consultationId
+        // Example:
+        // $('#editConsultDate').val(''); // Populate with consultation date
+        // $('#editMotif').val(''); // Populate with motif
+        // $('#editPrix').val(''); // Populate with prix
+
+        $('#editConsultationModal').modal('show');
+    });
+
+    // Delete Consultation Modal Show
+    $('.deleteConsultationBtn').click(function() {
+        // Fetch consultation ID to delete
+        var consultationId = $(this).closest('tr').data('consultation-id');
+
+        // Pass consultationId to the delete modal form
+        // Example:
+        // $('#deleteConsultationId').val(consultationId);
+
+        $('#deleteConsultationModal').modal('show');
+    });
+
+    // Save Changes for Add Consultation
+    $('#saveAddConsultationBtn').click(function() {
+        // Gather data from the form and perform AJAX call to add consultation
+        var consultationData = {
+            // Example:
+            // date: $('#addConsultDate').val(),
+            // motif: $('#addMotif').val(),
+            // prix: $('#addPrix').val()
+        };
+
+        // Perform AJAX post to add consultation endpoint
+        // Example:
+        // $.post('/add-consultation', consultationData, function(response) {
+        //     // Handle success or failure
+        // });
+
+        $('#addConsultationModal').modal('hide');
+    });
+
+    // Save Changes for Edit Consultation
+    $('#saveEditConsultationBtn').click(function() {
+        // Gather data from the form and perform AJAX call to update consultation
+        var consultationData = {
+            // Example:
+            // id: $('#editConsultationId').val(),
+            // date: $('#editConsultDate').val(),
+            // motif: $('#editMotif').val(),
+            // prix: $('#editPrix').val()
+        };
+
+        // Perform AJAX post to update consultation endpoint
+        // Example:
+        // $.post('/edit-consultation', consultationData, function(response) {
+        //     // Handle success or failure
+        // });
+
+        $('#editConsultationModal').modal('hide');
+    });
+
+    // Delete Consultation
+    $('#confirmDeleteConsultationBtn').click(function() {
+        var consultationId = $('#deleteConsultationId').val();
+
+        // Perform AJAX post to delete consultation endpoint
+        // Example:
+        // $.post('/delete-consultation', { id: consultationId }, function(response) {
+        //     // Handle success or failure
+        // });
+
+        $('#deleteConsultationModal').modal('hide');
+    });
+
+    $('#rendezvous-list').on('shown.bs.collapse', function () {
+            $(this).prev('.fixed-section').find('i').removeClass('fa-angle-down').addClass('fa-angle-up');
+        }).on('hidden.bs.collapse', function () {
+            $(this).prev('.fixed-section').find('i').removeClass('fa-angle-up').addClass('fa-angle-down');
+        });
+
+        $('#print-button').on('click', function() {
+                var printContent = $('.print-section').html();
+                var originalContent = $('body').html();
+
+                $('body').html(printContent);
+                window.print();
+                $('body').html(originalContent);
+            });
+});
+
+       
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>Listes des Patients</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="" name="keywords">
+    <meta content="" name="description">
+
+    <!-- Favicon -->
+    <link href="img/favicon.ico" rel="icon">
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Icon Font Stylesheet -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+    <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+    <link href="lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css" rel="stylesheet" />
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="/css/Docteur/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Template Stylesheet -->
+    <link href="/css/Docteur/css/style.css" rel="stylesheet">
+   <script src="https://kit.fontawesome.com/0b6d129e94.js" crossorigin="anonymous"></script>
+
+   <!-- Data table  -->
+   <link rel="stylesheet" href=" https://cdn.datatables.net/2.0.7/css/dataTables.dataTables.min.css">
+   <link rel="stylesheet" href="https://cdn.datatables.net/2.0.7/css/dataTables.bootstrap5.min.css">
+   <link rel="stylesheet" href="https://cdn.datatables.net/autofill/2.7.0/css/autoFill.bootstrap5.min.css">
+ 
+   <style>
+    body{
+        overflow-x:none;
+    }
+    .patients_table{
+        overflow-x: auto;
+    }
+    thead{
+        background-color: #2c4964;
+    }
+    #confirm-modal i,#success-modal i {
+        width:60px;
+        height:60px;
+    }
+
+   </style>
+
+</head>
+
+<body>
+    <div class="container-xxl position-relative bg-white d-flex p-0">
+        <!-- Spinner Start -->
+        <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+            <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
+        <!-- Spinner End -->
+
+
+        <!-- Sidebar Start -->
+      <div th:replace="E.Docteur/sidebar2.html"></div>
+
+        <!-- Sidebar End -->
+
+
+        <!-- Content Start -->
+        <div class="content">
+            <!-- Navbar Start -->
+            <nav class="navbar navbar-expand bg-light navbar-light sticky-top px-4 py-0">
+                <a href="#" class="sidebar-toggler flex-shrink-0">
+                    <i class="fa fa-bars"></i>
+                </a>
+                    <div class="nav-item dropdown text-end">
+                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+                            <img class="rounded-circle me-lg-2" src="img/user.jpg" alt="" style="width: 40px; height: 40px;">
+                            <span class="d-none d-lg-inline-flex">John Doe</span>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-end bg-light border-0 rounded-0 rounded-bottom m-0">
+                            <a href="#" class="dropdown-item">My Profile</a>
+                            <a href="#" class="dropdown-item">Settings</a>
+                            <a href="#" class="dropdown-item">Log Out</a>
+                        </div>
+                    </div>
+            </nav>
+      <!-- Navbar End -->
+
+            <!-- Page Content Name -->
+            <div class="container pt-4 mt-3 px-4">
+                <div class="alert bg-light text-secondary " role="alert">
+                    <i class="fa-solid fa-hospital-user me-2" ></i>
+                    Patients
+                 <a href="#" data-bs-toggle="modal" data-bs-target="#add-patient-modal" class="btn btn-outline-info text-dark  text-end" title="Ajouter un Patient"><i class="fa fa-plus 
+                    "></i></a>
+             </div>     
+            </div>
+            <!-- End Page Content Name -->
+   
+
+            <!-- Table des Patients -->
+            <div class="patients_table p-3 mt-3 mx-auto align-items-center">
+                <table id="patients_table" class="mt-3" >
+                    <thead class=" text-light">
+                          <tr>
+                            <td>#</td>
+                            <td>Nom</td>
+                            <td>Prenom</td>
+                            <td>Tel</td> 
+                            <td>Email</td>
+                            <td>Actions</td>
+                          </tr>
+                    </thead>
+                    <tbody>
+        
+                    </tbody>
+                    <tfoot>
+        
+                    </tfoot>
+                 </table>
+            </div>
+         
+            <!-- End Table Patients -->
+
+
+            <!-- Widgets Start -->
+              <!-- Widgets End -->
+
+
+             <!-- Footer Start -->
+             <div th:replace="layouts/footer.html"></div>
+             <!-- Footer End -->>
+        </div>
+        <!-- Content End -->
+
+
+        <!-- Back to Top -->
+        <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
+    </div>
+ <!-- Add patient Modal -->
+    <div class="modal fade" id="add-patient-modal" tabindex="-1" aria-labelledby="add-patient-modal" aria-hidden="true">
+        <form th:action="@{/Patient/save}" method="post" th:object="${patientDto}">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title text-light">Ajouter Patient</h5>
+                        <button type="button" class="btn-close text-light" id="close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <input type="hidden" th:value="${hasError}" class="flag">
+                        <div class="sexe my-1">
+                            <label for="">Sexe :</label>
+                            <div class="form-check form-check-inline mx-5">
+                                <input th:field="*{sexe}" class="form-check-input" type="radio" id="Sexe" name="sexe" value="M">
+                                <label class="form-check-label" for="Sexe">Male</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input th:field="*{sexe}" class="form-check-input" type="radio" id="Sexe" name="sexe"  value="F">
+                                <label class="form-check-label" for="Sexe">Female</label>
+                            </div>
+                            <div th:if="${#fields.hasErrors('sexe')}" class="text-danger" th:errors="*{sexe}">Prenom Error</div>
+                        </div>
+                        
+                        <div class="form-floating mb-3">
+                            <input type="text" th:field="*{nom}" class="form-control" id="nom" name="nom" placeholder="Entrer votre Nom" >
+                            <label for="nom">Nom</label>
+                            <div th:if="${#fields.hasErrors('nom')}" th:errors="*{nom}" class="text-danger">Nom Error</div>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input type="text" th:field="*{prenom}" class="form-control" id="prenom" name="prenom" placeholder="Entrer votre Prenom" >
+                            <label for="prenom">Prenom</label>
+                            <div th:if="${#fields.hasErrors('prenom')}" th:errors="*{prenom}" class="text-danger">Prenom Error</div>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input type="text" th:field="*{cin}" class="form-control" id="cin" name="cin" placeholder="Entrer votre Cin" >
+                            <label for="cin">CIN</label>
+                            <div th:if="${#fields.hasErrors('cin')}" th:errors="*{cin}" class="text-danger">CIN Error</div>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input type="tel" th:field="*{tele}" class="form-control" id="tele" name="tele" placeholder="Entrer votre Tele" >
+                            <label for="tele">Tele</label>
+                            <div th:if="${#fields.hasErrors('tele')}" th:errors="*{tele}" class="text-danger">Tele Error</div>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input type="email" th:field="*{email}" class="form-control" id="email" name="email" placeholder="name@example.com" >
+                            <label for="email">Email</label>
+                            <div th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="text-danger">Email Error</div>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input type="date" th:field="*{dateNais}" class="form-control" id="date_c" name="date_c" placeholder="Date de Naissance" >
+                            <label for="date_c">Date Naissance</label>
+                            <div th:if="${#fields.hasErrors('dateNais')}" th:errors="*{dateNais}" class="text-danger">Date Naissance Error</div>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input type="text" th:field="*{nationalite}" class="form-control" id="nation" name="nation" placeholder="Entrer votre nationalite" >
+                            <label for="nation">Nationalite</label>
+                            <div th:if="${#fields.hasErrors('nationalite')}" th:errors="*{nationalite}" class="text-danger">Nationalite Error</div>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <textarea th:field="*{notes}" rows="4" class="w-100 form-control" placeholder="Notes :(Optional)"></textarea>
+                            <div th:if="${#fields.hasErrors('notes')}" th:errors="*{notes}" class="text-danger">Notes Error</div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="reset" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    
+    
+    </div>
+  <!-- End add patient Modal --> 
+  
+  <!-- Update patient Modal -->
+  <div class="modal fade" id="update-patient-modal" tabindex="-1" aria-labelledby="add-patient-modal" aria-hidden="true">
+
+    <form th:action="@{/Patient/update}" method="post" th:object="${patientDto}">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-light">Update Patient</h5>
+                    <button type="button" class="btn-close text-light" id="close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" th:value="${hasError}" class="flag">
+                    <input type="hidden" th:field="*{id}" name="id" >
+                    <div class="sexe my-1">
+                        <label for="">Sexe :</label>
+                        <div class="form-check form-check-inline mx-5">
+                            <input th:field="*{sexe}" class="form-check-input" type="radio" id="Sexe" name="sexe" value="M">
+                            <label class="form-check-label" for="Sexe">Male</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input th:field="*{sexe}" class="form-check-input" type="radio" id="Sexe" name="sexe"  value="F">
+                            <label class="form-check-label" for="Sexe">Female</label>
+                        </div>
+                        <div th:if="${#fields.hasErrors('sexe')}" class="text-danger" th:errors="*{sexe}">sexe Error</div>
+                    </div>
+                    
+                    <div class="form-floating mb-3">
+                        <input type="text" th:field="*{nom}" class="form-control" id="nom" name="nom" placeholder="Entrer votre Nom" >
+                        <label for="nom">Nom</label>
+                        <div th:if="${#fields.hasErrors('nom')}" th:errors="*{nom}" class="text-danger">Nom Error</div>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="text" th:field="*{prenom}" class="form-control" id="prenom" name="prenom" placeholder="Entrer votre Prenom" >
+                        <label for="prenom">Prenom</label>
+                        <div th:if="${#fields.hasErrors('prenom')}" th:errors="*{prenom}" class="text-danger">Prenom Error</div>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="text" th:field="*{cin}" class="form-control" id="cin" name="cin" placeholder="Entrer votre Cin" >
+                        <label for="cin">CIN</label>
+                        <div th:if="${#fields.hasErrors('cin')}" th:errors="*{cin}" class="text-danger">CIN Error</div>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="tel" th:field="*{tele}" class="form-control" id="tele" name="tele" placeholder="Entrer votre Tele" >
+                        <label for="tele">Tele</label>
+                        <div th:if="${#fields.hasErrors('tele')}" th:errors="*{tele}" class="text-danger">Tele Error</div>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="email" th:field="*{email}" class="form-control" id="email" name="email" placeholder="name@example.com" >
+                        <label for="email">Email</label>
+                        <div th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="text-danger">Email Error</div>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="date" th:field="*{dateNais}" class="form-control" id="date_c" name="date_c" placeholder="Date de Naissance" >
+                        <label for="date_c">Date Naissance</label>
+                        <div th:if="${#fields.hasErrors('dateNais')}" th:errors="*{dateNais}" class="text-danger">Date Naissance Error</div>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="text" th:field="*{nationalite}" class="form-control" id="nation" name="nation" placeholder="Entrer votre nationalite" >
+                        <label for="nation">Nationalite</label>
+                        <div th:if="${#fields.hasErrors('nationalite')}" th:errors="*{nationalite}" class="text-danger">Nationalite Error</div>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <textarea th:field="*{notes}" rows="4" class="w-100 form-control" name="notes" placeholder="Notes :(Optional)"></textarea>
+                        <div th:if="${#fields.hasErrors('notes')}" th:errors="*{notes}" class="text-danger">Notes Error</div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="reset" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            </div>
+        </div>
+    </form>
+
+</div>
+<!-- End UPDATE patient Modal --> 
+
+<!-- Confirm delete Modal -->
+<div class="modal fade" id="confirmation-modal" tabindex="-1" aria-labelledby="login-modal" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title mx-auto text-center">
+                        <i class="fa-solid fa-triangle-exclamation fa-beat" style="color: #FFD43B;"></i>
+                    </h5>
+                    <button type="button" class="btn-close text-light" id="close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  By Deleting the Patient the medical file and all the information related to the patient are going to be deleted
+                </div>
+                <div class="modal-footer mx-auto text-center">
+                <button type="button" class="btn btn-danger confirm-btn" data-bs-dismiss="modal">Confirmer</button>
+                <button type="button" class="btn btn-secondary cancel-btn">Annuler</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+ <!-- End Confirm delete Modal -->
+
+ <!-- Echec delete Modal -->
+<div class="modal fade" id="echec-modal" tabindex="-1" aria-labelledby="login-modal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header d-flex justify-content-center">
+            <h5 class="modal-title mx-auto" ><i class="fa-regular fa-triangle-exclamation fa-beat" style="color: #FFD43B;"></i>FAILURE</h5>
+            <button type="button" class="btn-close text-light" id="close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+            
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Confirmer</button>
+            </div>
+        </div>
+    </div>
+
+</div>
+<!-- End Echec delete Modal -->
+
+ <!-- delete success Modal -->
+<div class="modal fade" id="success-modal" tabindex="-1" aria-labelledby="login-modal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header d-flex justify-content-center">
+            <h5 class="modal-title mx-auto" ><i class="fa-solid fa-circle-check" style="color: #63E6BE;"></i>SUCCESS</h5>
+            <button type="button" class="btn-close text-light" id="close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+             
+            </div>
+            <div class="modal-footer justify-content-center">
+            <button type="button" class="btn btn-success confirm-btn" data-bs-dismiss="modal">Ok</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End  delete success Modal -->
+
+    <!-- JavaScript Libraries -->
+    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- DataTables JS -->
+    <script src="https://cdn.datatables.net/2.0.7/js/dataTables.bootstrap5.min.js"></script>
+    <script src="https://cdn.datatables.net/2.0.7/js/dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/autofill/2.7.0/js/dataTables.autoFill.min.js"></script>
+    <script src="https://cdn.datatables.net/autofill/2.7.0/js/autoFill.bootstrap5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/3.0.2/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.bootstrap5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.colVis.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.print.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.html5.min.js"></script>
+    <!-- Template Javascript -->
+    <script src="/js/main.js"></script>
+
+<script>
+
+
+        $(document).ready(function(){
+
+            function showModalIfErrors(){
+
+                var hasError=$("#add-patient-modal .flag").val();
+                console.log('hasError value:', hasError, 'Type:', typeof hasError);
+                if(hasError=='true'){
+                  $("#add-patient-modal").modal('show');
+                }
+            }
+
+            showModalIfErrors();
+        $("#patients_table").DataTable({
+            dom: 'Bfrtip',
+            layout:{
+                topStart:{
+                    buttons: [
+            {
+                extend: 'copy',
+                exportOptions: {
+                    columns: [0, 1, 2, 3, 4] 
+                }
+            },
+            {
+                extend: 'csv',
+                exportOptions: {
+                    columns: [0, 1, 2, 3, 4] 
+                }
+            },
+            {
+                extend: 'excel',
+                exportOptions: {
+                    columns: [0, 1, 2, 3, 4] 
+                }
+            },
+            {
+                extend: 'pdf',
+                exportOptions: {
+                    columns: [0, 1, 2, 3, 4] 
+                }
+            },
+            {
+                extend: 'print',
+                exportOptions: {
+                    columns: [0, 1, 2, 3, 4] 
+                }
+            }
+        ],
+                }
+            },
+            scrolly:true,
+            scrollx:true,
+            responsive:true,
+            searching:true,
+            ordering:true,
+            paging:true,
+            select:false
+        })
+
+
+   // fill Patients DataTable
+   function fillPatientsTable(){
+    $('#patients_table').DataTable().clear().draw();
+    let dataTable=$("#patients_table").DataTable();
+    $.ajax({
+        type:'GET',
+        url:'/E.Docteur/List-Patient',
+        dataType:'json',
+        success:function(response,status,xhr){
+            console.log(response);
+              $.each(response,function(index,patient){
+                console.log(patient.id);
+                var btns = '<div class="btn-group dropleft"> \
+                        <button type="button" class="btn btn-outline-info btn-sm" title="Actions"><span class="fa fa-ellipsis-h"></span></button> \
+                        <button type="button" class="btn btn-outline-info btn-sm dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> \
+                            <span class="sr-only">Toggle Dropdown</span> \
+                        </button> \
+                        <div class="dropdown-menu shadow p-3 mb-5 bg-white rounded"> \
+                            <div class="bg-primary text-light px-3 py-1"><span class="fa fa-ellipsis-h mr-4"></span> Actions</div> \
+                            <div class="dropdown-divider"></div> \
+                            <a class="dropdown-item patient-details text-primary " href="#" patientId="' + patient.id + '"><span class="fa fa-info-circle me-2"></span>Détails</a> \
+                            <a class="dropdown-item  patient-update text-primary " href="#" patientId="' + patient.id + '"><span class="fa fa-pen me-2"></span>Modifier</a> \
+                            <a class="dropdown-item patient-delete text-primary " href="#" patientId="' + patient.id + '"><span class="fa fa-trash me-2"></span>Supprimer</a> \
+                            <a class="dropdown-item patient-dossier text-primary " href="/DossierMedical?id=' + patient.id + '"><span class="fa-solid fa-notes-medical me-2"></span>Dossier Medical</a> \
+                        </div> \
+                    </div>';
+                   dataTable.row.add([ 
+                    patient.id,
+                    patient.nom,
+                    patient.prenom,
+                    patient.tele,
+                    patient.email,
+                    btns
+                ]).draw(false);
+                   
+              })
+        },
+        error:function(response,status,xhr){
+
+        },
+        
+    })
+   }
+   fillPatientsTable();
+
+   /* fill update form */
+    $("#patients_table").on('click','.patient-update',function(){
+        var patientId=$(this).attr("patientId");
+        console.log("GET PATIENT ID FOR DETAILS :"+patientId);
+
+        $.ajax({
+            url:'/Patient/update',
+            type:'GET',
+            dataType:'json',
+            data:{patientId:patientId},
+            success:function(response,status,xhr){
+                console.log(response);
+                var date = new Date(response.dateNais);
+
+                var formattedDate = date.toISOString().split('T')[0];
+                
+                $("#update-patient-modal input[name=id]").val(response.id);
+                $("#update-patient-modal input[type=radio][value='" + response.sexe + "']").prop("checked", true);
+                $("#update-patient-modal input[name=nom]").val(response.nom);
+                $("#update-patient-modal input[name=prenom]").val(response.prenom);
+                $("#update-patient-modal input[name=cin]").val(response.cin);
+                $("#update-patient-modal input[name=nation]").val(response.nationalite);
+                $("#update-patient-modal input[type=date]").val(formattedDate);
+                $("#update-patient-modal input[name=email]").val(response.email);
+                $("#update-patient-modal input[name=tele]").val(response.tele);
+                $("#update-patient-modal textArea").val(response.notes);
+                $("#update-patient-modal").modal('show');
+            },
+            error:function(response){
+
+            }
+        })
+    })
+    $("#patients_table").on('click', '.patient-delete', function() {
+    var patientId = $(this).attr("patientId");
+    $("#confirmation-modal").modal("show");
+
+    $("#confirmation-modal").on("click", ".confirm-btn", function() {
+        $.ajax({
+            url: '/Patient/delete',
+            type: 'POST',
+            data: { patientId: patientId },
+            success: function(response, status, xhr) {
+                console.log("Success: " + response);
+                $("#success-modal .modal-body").html(response);
+                $("#success-modal").modal("show");
+            },
+            error: function(response, status, xhr) {
+                console.log("Error: " + response);
+                $("#echec-modal .modal-body").html(response);
+                $("#echec-modal").modal("show");
+            },
+            complete: function(response) {
+                fillPatientsTable();
+            }
+        });
+    });
+
+    $("#confirmation-modal").on("click", ".cancel-btn", function() {
+        $("#confirmation-modal").modal("hide");
+    });
+});
+
+               
+
+       
+})
+    </script>
+</body>
+
+</html>

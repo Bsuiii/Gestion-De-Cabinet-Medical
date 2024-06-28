@@ -1,0 +1,168 @@
+* {
+    padding:0;
+    margin:0;
+    box-sizing: border-box;
+    color: #2c4964;
+    font-family: "Open Sans", sans-serif;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+font-family: "Raleway", sans-serif;
+}
+.rdv {
+    height: auto;
+    bottom:-30%;
+    border-radius:5px;
+    border:0.5px solid rgb(206, 206, 206);
+    background:white;
+}
+.rdv label{
+   font-size: calc(0.1vw + 0.8rem); 
+}
+.holder {
+    height: 100vh;
+}
+.navbar{
+    height:auto;
+    
+    z-index:1;
+}
+.navbar a{
+    text-decoration:none ;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-weight: 500;
+    width:30px; 
+    color:#2c4964;
+    transition: border-bottom 0.3s all; /* Added transition for smooth effect */
+}
+.navbar .links a:hover{
+    border-bottom: 2px solid #1977cc;
+    color:#1977cc;
+}
+.holder{
+    background-image: url("../img/hero-bg.jpg");
+    background-size: cover;
+}
+#quote h4 {
+margin: 0;
+font-size: calc(2.5vw + 1rem); /* Variable font-size based on viewport width */
+font-weight: 700;
+line-height: 56px;
+text-transform: uppercase;
+}
+#quote h5 {
+    font-size: calc(1vw + 1rem); /* Variable font-size based on viewport width */
+line-height: 56px;
+}
+#quote{
+    left:5%;    
+    top:20%;
+}
+.apappointment-btn{
+    min-width:100px;
+    background: #1977cc;
+    border-radius: 30px;
+    color:white;
+    font-family: "Raleway", sans-serif;
+    text-decoration: none;;
+    
+}
+.apappointment-btn:hover,#rdv-btn:hover{
+    background-color: #2c4964;
+    color:#fff;
+    border: none;
+}   
+
+.rdv input[type="text"], .rdv input[type="email"], .rdv input[type="date"]{
+    background-color: inherit;
+    border:none;
+    border-bottom: 1px solid #2c4964;
+    border-radius: 0;
+}
+.rdv input:focus{
+    outline: none;
+    border:none;
+}
+.about{
+    margin-top:20%;
+}
+.about .icon-boxes h4 {
+font-size: 18px;
+color: #4b7dab;
+margin-bottom: 15px;
+}
+
+.about .icon-boxes h3 {
+font-size: 28px;
+font-weight: 700;
+color: #2c4964;
+margin-bottom: 15px;
+}
+
+.about .icon-box {
+margin-top: 40px;
+}
+
+.about .icon-box .icon {
+float: left;
+display: flex;
+align-items: center;
+justify-content: center;
+width: 64px;
+height: 64px;
+border: 2px solid #8dc2f1;
+border-radius: 50px;
+transition: 0.5s;
+}
+
+.about .icon-box .icon i {
+color: #1977cc;
+font-size: 32px;
+}
+
+.about .icon-box:hover .icon {
+background: #1977cc;
+border-color: #1977cc;
+}
+
+.about .icon-box:hover .icon i {
+color: #fff;
+}
+
+.about .icon-box .title {
+margin-left: 85px;
+font-weight: 700;
+margin-bottom: 10px;
+font-size: 18px;
+}
+
+.about .icon-box .title a {
+color: #343a40;
+transition: 0.3s;
+}
+
+.about .icon-box .title a:hover {
+color: #1977cc;
+}
+
+.about .icon-box .description {
+margin-left: 85px;
+line-height: 24px;
+font-size: 14px;
+}
+
+.about .video-box {
+background: url("../img/doctors/doctors-1.jpg") center center no-repeat;
+background-size: cover;
+min-height: 500px;
+}
+.modal-header{
+background:#2c4964;
+}
+#close{
+color:white;
+}
